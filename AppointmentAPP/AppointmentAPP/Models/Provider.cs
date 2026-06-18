@@ -1,27 +1,23 @@
-﻿using AppointmentAPP.Models.Entity;
+﻿using AppointmentAPP.Enums;
+using AppointmentAPP.Models.Entity;
 
 namespace AppointmentAPP.Models
 {
     public class Provider : BaseEntity
     {
         public string BusinessName { get; set; }
-
         public string Description { get; set; }
+        public string Category { get; set; }          
+        public ProviderStatus Status { get; set; } = ProviderStatus.Pending;
+        public bool IsActive { get; set; } = true;
 
         public Guid UserId { get; set; }
+        public AppUser User { get; set; }
 
-        public User User { get; set; }
-
-        public List<Service> Services { get; set; }
-            = new List<Service>();
-
-        public List<WorkingHour> WorkingHours { get; set; }
-            = new List<WorkingHour>();
-
-        public List<Appointment> Appointments { get; set; }
-            = new List<Appointment>();
-
-        public List<Review> Reviews { get; set; }
-            = new List<Review>();
+        public List<Service> Services { get; set; } = new();
+        public List<WorkingHour> WorkingHours { get; set; } = new();
+        public List<UnavailableDay> UnavailableDays { get; set; } = new();
+        public List<Appointment> Appointments { get; set; } = new();
+        public List<Review> Reviews { get; set; } = new();
     }
 }

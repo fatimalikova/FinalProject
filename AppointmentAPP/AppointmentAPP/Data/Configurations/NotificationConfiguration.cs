@@ -8,22 +8,14 @@ namespace AppointmentAPP.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Notification> builder)
         {
-            builder.HasKey(x => x.Id);
+            builder.Property(n => n.Title).IsRequired().HasMaxLength(150);
+            builder.Property(n => n.Message).IsRequired().HasMaxLength(500);
+            builder.Property(n => n.Type).HasConversion<string>().HasMaxLength(40);
 
-            builder.Property(x => x.Title)
-                .IsRequired()
-                .HasMaxLength(200);
-
-            builder.Property(x => x.Message)
-                .IsRequired()
-                .HasMaxLength(500);
-
-            builder.Property(x => x.IsRead)
-                .HasDefaultValue(false);
-
-            builder.HasOne(x => x.User)
-                .WithMany(x => x.Notifications)
-                .HasForeignKey(x => x.UserId);
+            builder.HasOne(n => n.User)
+                .WithMany(u => u.Notifications)
+                .HasForeignKey(n => n.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

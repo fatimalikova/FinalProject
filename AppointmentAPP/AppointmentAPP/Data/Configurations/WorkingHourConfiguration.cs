@@ -8,21 +8,9 @@ namespace AppointmentAPP.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<WorkingHour> builder)
         {
-            builder.HasKey(x => x.Id);
-
-            builder.Property(x => x.Day)
-                .IsRequired();
-
-            builder.Property(x => x.StartTime)
-                .IsRequired();
-
-            builder.Property(x => x.EndTime)
-                .IsRequired();
-
-            builder.HasOne(x => x.Provider)
-                .WithMany(x => x.WorkingHours)
-                .HasForeignKey(x => x.ProviderId)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.Property(w => w.Day).IsRequired();
+            builder.Property(w => w.StartTime).IsRequired();
+            builder.Property(w => w.EndTime).IsRequired();
         }
     
     }

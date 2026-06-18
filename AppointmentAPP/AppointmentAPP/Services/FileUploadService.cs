@@ -1,4 +1,6 @@
-﻿namespace AppointmentAPP.Services
+﻿using AppointmentAPP.Services.Interfaces;
+
+namespace AppointmentAPP.Services
 {
     public class FileUploadService : IFileUploadService
     {

@@ -1,0 +1,13 @@
+﻿namespace AppointmentAPP.Dtos.AppointmentDtos
+{
+    public class CreateAppointmentDto
+    {
+        public Guid ClientId { get; set; }
+
+        public Guid ProviderId { get; set; }
+
+        public Guid ServiceId { get; set; }
+
+        public DateTime StartDateTime { get; set; }
+    }
+}

@@ -8,23 +8,17 @@ namespace AppointmentAPP.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Review> builder)
         {
-            builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.Rating)
-                .IsRequired();
+            builder.Property(r => r.Rating).IsRequired();
+            builder.Property(r => r.Comment).HasMaxLength(1000);
 
-            builder.Property(x => x.Comment)
-                .HasMaxLength(1000);
-
-            builder.HasOne(x => x.Client)
-                .WithMany(x => x.Reviews)
-                .HasForeignKey(x => x.ClientId)
+            builder.HasOne(r => r.Client)
+                .WithMany(u => u.Reviews)
+                .HasForeignKey(r => r.ClientId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne(x => x.Provider)
-                .WithMany(x => x.Reviews)
-                .HasForeignKey(x => x.ProviderId)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.ToTable(t => t.HasCheckConstraint("CK_Review_Rating", "[Rating] BETWEEN 1 AND 5"));
+        
         }
     }
 }

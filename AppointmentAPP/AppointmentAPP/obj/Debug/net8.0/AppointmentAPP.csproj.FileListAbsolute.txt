@@ -144,10 +144,10 @@ C:\Users\fmeli\OneDrive\Desktop\Appointment\AppointmentAPP\AppointmentAPP\obj\De
 C:\Users\fmeli\OneDrive\Desktop\Appointment\AppointmentAPP\AppointmentAPP\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\fmeli\OneDrive\Desktop\Appointment\AppointmentAPP\AppointmentAPP\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 C:\Users\fmeli\OneDrive\Desktop\Appointment\AppointmentAPP\AppointmentAPP\obj\Debug\net8.0\swae.build.ex.cache
-C:\Users\fmeli\OneDrive\Desktop\Appointment\AppointmentAPP\AppointmentAPP\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\fmeli\OneDrive\Desktop\Appointment\AppointmentAPP\AppointmentAPP\obj\Debug\net8.0\Appointm.1DAA0AB4.Up2Date
 C:\Users\fmeli\OneDrive\Desktop\Appointment\AppointmentAPP\AppointmentAPP\obj\Debug\net8.0\AppointmentAPP.dll
 C:\Users\fmeli\OneDrive\Desktop\Appointment\AppointmentAPP\AppointmentAPP\obj\Debug\net8.0\refint\AppointmentAPP.dll
 C:\Users\fmeli\OneDrive\Desktop\Appointment\AppointmentAPP\AppointmentAPP\obj\Debug\net8.0\AppointmentAPP.pdb
 C:\Users\fmeli\OneDrive\Desktop\Appointment\AppointmentAPP\AppointmentAPP\obj\Debug\net8.0\AppointmentAPP.genruntimeconfig.cache
 C:\Users\fmeli\OneDrive\Desktop\Appointment\AppointmentAPP\AppointmentAPP\obj\Debug\net8.0\ref\AppointmentAPP.dll
+C:\Users\fmeli\OneDrive\Desktop\Appointment\AppointmentAPP\AppointmentAPP\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

@@ -8,31 +8,21 @@ namespace AppointmentAPP.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Appointment> builder)
         {
-            builder.HasKey(x => x.Id);
+            builder.Property(a => a.Status)
+               .HasConversion<string>()   // enum DB-də string kimi saxlanılır (oxunaqlı olur)
+               .HasMaxLength(30)
+               .IsRequired();
 
-            builder.Property(x => x.StartDateTime)
-            .IsRequired();
+            builder.Property(a => a.Notes).HasMaxLength(500);
+            builder.Property(a => a.CancelReason).HasMaxLength(300);
 
-            builder.Property(x => x.EndDateTime)
-                .IsRequired();
-
-            builder.Property(x => x.Status)
-                .IsRequired();
-
-            builder.HasOne(x => x.Client)
-                .WithMany(x => x.Appointments)
-                .HasForeignKey(x => x.ClientId)
+            // AppUser (Client) silinəndə onun appointment-ləri də silinsin
+            builder.HasOne(a => a.Client)
+                .WithMany(u => u.Appointments)
+                .HasForeignKey(a => a.ClientId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne(x => x.Provider)
-                .WithMany(x => x.Appointments)
-                .HasForeignKey(x => x.ProviderId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasOne(x => x.Service)
-                .WithMany(x => x.Appointments)
-                .HasForeignKey(x => x.ServiceId)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasIndex(a => new { a.ProviderId, a.StartDateTime });
         }
     }
 }

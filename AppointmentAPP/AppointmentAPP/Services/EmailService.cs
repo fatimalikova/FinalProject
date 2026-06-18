@@ -1,4 +1,5 @@
-﻿using MailKit.Net.Smtp;
+﻿using AppointmentAPP.Services.Interfaces;
+using MailKit.Net.Smtp;
 using MimeKit;
 
 namespace AppointmentAPP.Services

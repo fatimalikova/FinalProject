@@ -8,32 +8,42 @@ namespace AppointmentAPP.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Provider> builder)
         {
-             builder.HasKey(x => x.Id);
+            builder.Property(p => p.BusinessName)
+               .IsRequired()
+               .HasMaxLength(150);
 
-            builder.Property(x => x.BusinessName)
+            builder.Property(p => p.Category)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(80);
 
-            builder.Property(x => x.Description) .HasMaxLength(500);
+            builder.Property(p => p.Description)
+                .HasMaxLength(1000);
 
-            builder.HasMany(x => x.Services)
-                .WithOne(x => x.Provider)
-                .HasForeignKey(x => x.ProviderId)
+            builder.HasMany(p => p.Services)
+                .WithOne(s => s.Provider)
+                .HasForeignKey(s => s.ProviderId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasMany(x => x.WorkingHours)
-                .WithOne(x => x.Provider)
-                .HasForeignKey(x => x.ProviderId) .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasMany(x => x.Appointments)
-                .WithOne(x => x.Provider)
-                .HasForeignKey(x => x.ProviderId)
+            builder.HasMany(p => p.WorkingHours)
+                .WithOne(w => w.Provider)
+                .HasForeignKey(w => w.ProviderId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasMany(x => x.Reviews)
-                .WithOne(x => x.Provider)
-                .HasForeignKey(x => x.ProviderId)
+            builder.HasMany(p => p.UnavailableDays)
+                .WithOne(u => u.Provider)
+                .HasForeignKey(u => u.ProviderId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Multiple cascade path problemi olmasın deyə Restrict
+            builder.HasMany(p => p.Appointments)
+                .WithOne(a => a.Provider)
+                .HasForeignKey(a => a.ProviderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany(p => p.Reviews)
+                .WithOne(r => r.Provider)
+                .HasForeignKey(r => r.ProviderId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

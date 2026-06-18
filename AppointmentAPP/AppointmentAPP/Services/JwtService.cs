@@ -1,4 +1,5 @@
 ﻿using AppointmentAPP.Models;
+using AppointmentAPP.Services.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -9,17 +10,17 @@ namespace AppointmentAPP.Services
 {
     public class JwtService : IJwtService
     {
-        public string GenerateToken(User user, IList<string> roles, IConfiguration config)
+        public string GenerateToken(AppUser user, IList<string> roles, IConfiguration config)
         {
             var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim("FullName", user.FullName ?? "")
-            };
+    {
+        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+        new Claim(ClaimTypes.Name, user.UserName ?? string.Empty),
+        new Claim("FullName", user.FullName ?? "")
+    };
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:Key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:Key"]!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
@@ -52,7 +53,7 @@ namespace AppointmentAPP.Services
                 ValidIssuer = config["JWT:Issuer"],
                 ValidAudience = config["JWT:Audience"],
                 IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(config["JWT:Key"]))
+                Encoding.UTF8.GetBytes(config["JWT:Key"]))
             };
 
             var handler = new JwtSecurityTokenHandler();

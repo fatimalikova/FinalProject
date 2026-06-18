@@ -8,26 +8,21 @@ namespace AppointmentAPP.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Service> builder)
         {
-            builder.HasKey(x => x.Id);
+            builder.Property(s => s.Name)
+               .IsRequired()
+               .HasMaxLength(120);
 
-            builder.Property(x => x.Name)
-                .IsRequired()
-                .HasMaxLength(100);
-
-            builder.Property(x => x.Description)
+            builder.Property(s => s.Description)
                 .HasMaxLength(500);
 
-            builder.Property(x => x.Price)
-                .IsRequired()
-                .HasColumnType("decimal(18,2)");
+            builder.Property(s => s.Price)
+                .HasColumnType("decimal(10,2)");
 
-            builder.Property(x => x.DurationMinutes)
-                .IsRequired();
-
-            builder.HasOne(x => x.Provider)
-                .WithMany(x => x.Services)
-                .HasForeignKey(x => x.ProviderId)
-                .OnDelete(DeleteBehavior.Cascade);
+            // Servis silinəndə appointment-lər silinməsin (tarixçə qalsın)
+            builder.HasMany(s => s.Appointments)
+                .WithOne(a => a.Service)
+                .HasForeignKey(a => a.ServiceId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     
     }

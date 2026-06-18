@@ -2,6 +2,7 @@
 using AppointmentAPP.Models;
 using AppointmentAPP.Profiles;
 using AppointmentAPP.Services;
+using AppointmentAPP.Services.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -68,7 +69,7 @@ namespace AppointmentAPP
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
 
-            services.AddIdentity<User, IdentityRole>()
+            services.AddIdentity<AppUser, IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -98,7 +99,6 @@ namespace AppointmentAPP
             services.AddScoped<IEmailService, EmailService>();
             services.AddFluentValidationAutoValidation();
 
-            //services.AddValidatorsFromAssemblyContaining<EventCreateDtoValidator>();
 
             return services;
         }

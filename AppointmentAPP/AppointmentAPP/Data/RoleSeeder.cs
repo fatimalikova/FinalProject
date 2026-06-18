@@ -4,34 +4,22 @@ namespace AppointmentAPP.Data
 {
     public class RoleSeeder
     {
-        public static async Task SeedAsync(RoleManager<IdentityRole> roleManager) {
+        private static readonly string[] Roles = { "Admin", "Provider", "Client" };
 
-            var roles = new[] 
+        public static async Task SeedAsync(IServiceProvider serviceProvider)
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
+
+            foreach (var roleName in Roles)
             {
-                new IdentityRole{
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Admin",
-                    NormalizedName = "ADMIN"
-                },
-                new IdentityRole{ 
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Provider",
-                    NormalizedName = "PROVIDER"
-                },
-                new IdentityRole{ 
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Client",
-                    NormalizedName = "CLIENT"
-                }
-                
-            };
-            foreach (var role in roles)
-            {
-                if (!await roleManager.RoleExistsAsync(role.Name))
+                var exists = await roleManager.RoleExistsAsync(roleName);
+                if (!exists)
                 {
-                    await roleManager.CreateAsync(role);
+                    await roleManager.CreateAsync(new IdentityRole<Guid>(roleName));
                 }
             }
         }
+
     }
+    
 }
