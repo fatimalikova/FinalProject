@@ -20,5 +20,6 @@ namespace AppointmentAPP.Models
 
         public string? Notes { get; set; }
         public string? CancelReason { get; set; }
+        public bool ReminderSent { get; set; } = false;
     }
 }

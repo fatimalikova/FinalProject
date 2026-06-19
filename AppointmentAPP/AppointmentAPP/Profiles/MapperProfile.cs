@@ -1,4 +1,5 @@
 ﻿using AppointmentAPP.Dtos.AppointmentDtos;
+using AppointmentAPP.Dtos.Login_RegisterDtos;
 using AppointmentAPP.Dtos.NotificationDtos;
 using AppointmentAPP.Dtos.ProviderDtos;
 using AppointmentAPP.Dtos.ReviewDtos;
@@ -16,6 +17,12 @@ namespace AppointmentAPP.Profiles
     {
         public MapperProfile()
         {
+            // ===== Register =====
+            CreateMap<RegisterDto, AppUser>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName));
+
             // ===== Provider =====
             CreateMap<Provider, ResponseProviderDto>()
                 .ForMember(d => d.Status, opt => opt.MapFrom(s => s.Status.ToString()))
