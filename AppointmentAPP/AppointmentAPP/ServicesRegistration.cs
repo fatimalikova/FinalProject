@@ -1,4 +1,5 @@
 ﻿using AppointmentAPP.Data;
+using AppointmentAPP.Helpers;
 using AppointmentAPP.Models;
 using AppointmentAPP.Profiles;
 using AppointmentAPP.Services;
@@ -20,24 +21,25 @@ namespace AppointmentAPP
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddControllers();
+            services.AddValidatorsFromAssemblyContaining<Program>();
 
             //using custom response model for exception handling and validation errors
 
-            //services.Configure<ApiBehaviorOptions>(options =>
-            //{
-            //    options.InvalidModelStateResponseFactory = context =>
-            //    {
-            //        var errors = context.ModelState
-            //            .Values
-            //            .SelectMany(v => v.Errors)
-            //            .Select(e => e.ErrorMessage)
-            //            .ToArray();
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = context =>
+                {
+                    var errors = context.ModelState
+                        .Values
+                        .SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage)
+                        .ToArray();
 
-            //        return new BadRequestObjectResult(
-            //            ResponseModelHelper.BadRequestResult<object>(errors)
-            //        );
-            //    };
-            //});
+                    return new BadRequestObjectResult(
+                        ResponseModelHelper.BadRequestResult<object>(errors)
+                    );
+                };
+            });
 
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(c =>

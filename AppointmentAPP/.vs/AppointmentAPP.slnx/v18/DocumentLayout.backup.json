@@ -3,20 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|c:\\users\\fmeli\\onedrive\\desktop\\appointment\\appointmentapp\\appointmentapp\\data\\migrations\\20260618111217_mig_1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|solutionrelative:appointmentapp\\data\\migrations\\20260618111217_mig_1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|c:\\users\\fmeli\\onedrive\\desktop\\appointment\\appointmentapp\\appointmentapp\\controller\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|solutionrelative:appointmentapp\\controller\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|c:\\users\\fmeli\\onedrive\\desktop\\appointment\\appointmentapp\\appointmentapp\\models\\systemsetting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|solutionrelative:appointmentapp\\models\\systemsetting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|c:\\users\\fmeli\\onedrive\\desktop\\appointment\\appointmentapp\\appointmentapp\\dtos\\userdtos\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|solutionrelative:appointmentapp\\dtos\\userdtos\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|c:\\users\\fmeli\\onedrive\\desktop\\appointment\\appointmentapp\\appointmentapp\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|solutionrelative:appointmentapp\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|c:\\users\\fmeli\\onedrive\\desktop\\appointment\\appointmentapp\\appointmentapp\\enums\\loginrole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|solutionrelative:appointmentapp\\enums\\loginrole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|c:\\users\\fmeli\\onedrive\\desktop\\appointment\\appointmentapp\\appointmentapp\\settings\\jwtsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|solutionrelative:appointmentapp\\settings\\jwtsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|c:\\users\\fmeli\\onedrive\\desktop\\appointment\\appointmentapp\\appointmentapp\\dtos\\userdtos\\registerdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|solutionrelative:appointmentapp\\dtos\\userdtos\\registerdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,8 +26,34 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 8,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "LoginRole.cs",
+              "DocumentMoniker": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Enums\\LoginRole.cs",
+              "RelativeDocumentMoniker": "AppointmentAPP\\Enums\\LoginRole.cs",
+              "ToolTip": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Enums\\LoginRole.cs*",
+              "RelativeToolTip": "AppointmentAPP\\Enums\\LoginRole.cs*",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAxwAQAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-19T12:44:28.236Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "LoginDto.cs",
+              "DocumentMoniker": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Dtos\\UserDtos\\LoginDto.cs",
+              "RelativeDocumentMoniker": "AppointmentAPP\\Dtos\\UserDtos\\LoginDto.cs",
+              "ToolTip": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Dtos\\UserDtos\\LoginDto.cs*",
+              "RelativeToolTip": "AppointmentAPP\\Dtos\\UserDtos\\LoginDto.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-19T12:39:19.626Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
@@ -50,54 +76,27 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "20260618111217_mig_1.cs",
-              "DocumentMoniker": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Data\\Migrations\\20260618111217_mig_1.cs",
-              "RelativeDocumentMoniker": "AppointmentAPP\\Data\\Migrations\\20260618111217_mig_1.cs",
-              "ToolTip": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Data\\Migrations\\20260618111217_mig_1.cs",
-              "RelativeToolTip": "AppointmentAPP\\Data\\Migrations\\20260618111217_mig_1.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-18T11:12:54.583Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "AppDbContext.cs",
-              "DocumentMoniker": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Data\\AppDbContext.cs",
-              "RelativeDocumentMoniker": "AppointmentAPP\\Data\\AppDbContext.cs",
-              "ToolTip": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Data\\AppDbContext.cs",
-              "RelativeToolTip": "AppointmentAPP\\Data\\AppDbContext.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-18T11:11:26.867Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "SystemSetting.cs",
-              "DocumentMoniker": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Models\\SystemSetting.cs",
-              "RelativeDocumentMoniker": "AppointmentAPP\\Models\\SystemSetting.cs",
-              "ToolTip": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Models\\SystemSetting.cs",
-              "RelativeToolTip": "AppointmentAPP\\Models\\SystemSetting.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAcAAAAeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-18T11:09:40.423Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "JwtSettings.cs",
-              "DocumentMoniker": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Settings\\JwtSettings.cs",
-              "RelativeDocumentMoniker": "AppointmentAPP\\Settings\\JwtSettings.cs",
-              "ToolTip": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Settings\\JwtSettings.cs",
-              "RelativeToolTip": "AppointmentAPP\\Settings\\JwtSettings.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "RegisterDto.cs",
+              "DocumentMoniker": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Dtos\\UserDtos\\RegisterDto.cs",
+              "RelativeDocumentMoniker": "AppointmentAPP\\Dtos\\UserDtos\\RegisterDto.cs",
+              "ToolTip": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Dtos\\UserDtos\\RegisterDto.cs",
+              "RelativeToolTip": "AppointmentAPP\\Dtos\\UserDtos\\RegisterDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-18T11:09:26.784Z",
+              "WhenOpened": "2026-06-19T10:13:07.085Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Controller\\AccountController.cs",
+              "RelativeDocumentMoniker": "AppointmentAPP\\Controller\\AccountController.cs",
+              "ToolTip": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Controller\\AccountController.cs*",
+              "RelativeToolTip": "AppointmentAPP\\Controller\\AccountController.cs*",
+              "ViewState": "AgIAAGUAAAAAAAAAAAA9wKwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-19T10:07:21.386Z",
               "EditorCaption": ""
             }
           ]

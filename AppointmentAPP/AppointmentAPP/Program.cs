@@ -1,6 +1,7 @@
 
 using AppointmentAPP;
 using AppointmentAPP.Data;
+using AppointmentAPP.Extensions;
 using AppointmentAPP.Models;
 using Microsoft.AspNetCore.Identity;
 
@@ -10,7 +11,7 @@ var config = builder.Configuration;
 builder.Services.AddApplicationServices(builder.Configuration);
 
 var app = builder.Build();
-//app.UseGlobalException();
+app.UseGlobalException();
 app.UseStaticFiles();
 
 if (app.Environment.IsDevelopment())
