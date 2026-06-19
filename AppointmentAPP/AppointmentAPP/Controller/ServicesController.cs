@@ -1,0 +1,68 @@
+﻿using AppointmentAPP.Dtos.ServiceDtos;
+using AppointmentAPP.Extensions;
+using AppointmentAPP.Helpers;
+using AppointmentAPP.Services.Interfaces;
+using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace AppointmentAPP.Controller
+{
+    [Route("api/[controller]")]
+    public class ServicesController(
+        IServiceManagementService serviceManagementService,
+        IValidator<CreateServiceDto> createValidator,
+        IValidator<UpdateServiceDto> updateValidator
+    ) : BaseController
+    {
+        [Authorize(Roles = "Provider")]
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateServiceDto dto)
+        {
+            var validation = createValidator.Validate(dto);
+            if (!validation.IsValid)
+                return BadRequest(ResponseModelHelper.BadRequestResult<object>(
+                    validation.Errors.Select(e => e.ErrorMessage).ToArray()));
+
+            var result = await serviceManagementService.CreateAsync(User.GetUserId(), dto);
+            return Ok(ResponseModelHelper.SuccessResult(result));
+        }
+
+        [AllowAnonymous]
+        [HttpGet("provider/{providerId:guid}")]
+        public async Task<IActionResult> GetByProvider(Guid providerId)
+        {
+            var result = await serviceManagementService.GetByProviderAsync(providerId);
+            return Ok(ResponseModelHelper.SuccessResult(result));
+        }
+
+        [Authorize(Roles = "Provider")]
+        [HttpGet("me")]
+        public async Task<IActionResult> GetMyServices()
+        {
+            var result = await serviceManagementService.GetMyServicesAsync(User.GetUserId());
+            return Ok(ResponseModelHelper.SuccessResult(result));
+        }
+
+        [Authorize(Roles = "Provider")]
+        [HttpPut("{id:guid}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateServiceDto dto)
+        {
+            var validation = updateValidator.Validate(dto);
+            if (!validation.IsValid)
+                return BadRequest(ResponseModelHelper.BadRequestResult<object>(
+                    validation.Errors.Select(e => e.ErrorMessage).ToArray()));
+
+            var result = await serviceManagementService.UpdateAsync(User.GetUserId(), id, dto);
+            return Ok(ResponseModelHelper.SuccessResult(result));
+        }
+
+        [Authorize(Roles = "Provider")]
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await serviceManagementService.DeleteAsync(User.GetUserId(), id);
+            return Ok(ResponseModelHelper.SuccessResult("Service deleted."));
+        }
+    }
+}

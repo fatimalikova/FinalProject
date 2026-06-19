@@ -99,8 +99,16 @@ namespace AppointmentAPP
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IFileUploadService, FileUploadService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IProviderService, ProviderService>();
+            services.AddScoped<IServiceManagementService, ServiceManagementService>();
+            services.AddScoped<IWorkingHourService, WorkingHourService>();
+            services.AddScoped<IAvailabilityService, AvailabilityService>();
+            services.AddScoped<IAppointmentService, AppointmentService>();
+            services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<ISystemSettingService, SystemSettingService>();
+            services.AddHostedService<ReminderBackgroundService>();
             services.AddFluentValidationAutoValidation();
-
+            services.AddHostedService<ReminderBackgroundService>();
 
             return services;
         }

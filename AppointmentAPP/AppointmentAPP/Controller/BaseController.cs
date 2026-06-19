@@ -3,14 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppointmentAPP.Controller
 {
-    //[Route("api/[controller]")]
-    //[ApiController]
-    //public class BaseController : ControllerBase
-    //{
-    //}
+    [Route("api/[controller]")]
     [ApiController]
-    [Produces("application/json")]
-    public abstract class BaseController : ControllerBase
+    public class BaseController : ControllerBase
     {
     }
 }

@@ -1,0 +1,147 @@
+﻿using AppointmentAPP.Data;
+using AppointmentAPP.Dtos.ProviderDtos;
+using AppointmentAPP.Enums;
+using AppointmentAPP.Exceptions;
+using AppointmentAPP.Models;
+using AppointmentAPP.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+
+namespace AppointmentAPP.Services
+{
+    public class ProviderService(AppDbContext db) : IProviderService
+    {
+        public async Task<ResponseProviderDto> RegisterAsync(Guid userId, CreateProviderDto dto)
+        {
+            var alreadyExists = await db.Providers.AnyAsync(p => p.UserId == userId);
+            if (alreadyExists)
+                throw new BadRequestException("This user already has a provider profile.");
+
+            var setting = await db.SystemSettings.FirstOrDefaultAsync();
+            var requireApproval = setting?.RequireProviderApproval ?? true;
+
+            var provider = new Provider
+            {
+                UserId = userId,
+                BusinessName = dto.BusinessName,
+                Category = dto.Category,
+                Description = dto.Description,
+                Status = requireApproval ? ProviderStatus.Pending : ProviderStatus.Approved
+            };
+
+            db.Providers.Add(provider);
+            await db.SaveChangesAsync();
+
+            return await MapToDto(provider.Id);
+        }
+
+        public async Task<ResponseProviderDto> GetMyProfileAsync(Guid userId)
+        {
+            var provider = await db.Providers.FirstOrDefaultAsync(p => p.UserId == userId)
+                ?? throw new NotFoundException("Provider profile not found.");
+
+            return await MapToDto(provider.Id);
+        }
+
+        public async Task<ResponseProviderDto> GetByIdAsync(Guid providerId)
+        {
+            var exists = await db.Providers.AnyAsync(p => p.Id == providerId);
+            if (!exists) throw new NotFoundException("Provider not found.");
+            return await MapToDto(providerId);
+        }
+
+        // Client-lər üçün — yalnız Approved + Active görünür
+        public async Task<List<ResponseProviderDto>> GetAllAsync(string? category, int page, int pageSize)
+        {
+            var query = db.Providers.Where(p => p.Status == ProviderStatus.Approved && p.IsActive);
+
+            if (!string.IsNullOrWhiteSpace(category))
+                query = query.Where(p => p.Category.ToLower() == category.ToLower());
+
+            var ids = await query
+                .OrderByDescending(p => p.CreatedAt)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(p => p.Id)
+                .ToListAsync();
+
+            var result = new List<ResponseProviderDto>();
+            foreach (var id in ids) result.Add(await MapToDto(id));
+            return result;
+        }
+
+        // 🔑 Admin üçün — status-a baxmadan (Pending daxil) hamısını görür
+        public async Task<List<ResponseProviderDto>> GetAllForAdminAsync(string? status, int page, int pageSize)
+        {
+            var query = db.Providers.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(status) && Enum.TryParse<ProviderStatus>(status, true, out var parsedStatus))
+                query = query.Where(p => p.Status == parsedStatus);
+
+            var ids = await query
+                .OrderByDescending(p => p.CreatedAt)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(p => p.Id)
+                .ToListAsync();
+
+            var result = new List<ResponseProviderDto>();
+            foreach (var id in ids) result.Add(await MapToDto(id));
+            return result;
+        }
+
+        public async Task<ResponseProviderDto> UpdateAsync(Guid userId, UpdateProviderDto dto)
+        {
+            var provider = await db.Providers.FirstOrDefaultAsync(p => p.UserId == userId)
+                ?? throw new NotFoundException("Provider profile not found.");
+
+            provider.BusinessName = dto.BusinessName;
+            provider.Category = dto.Category;
+            provider.Description = dto.Description;
+            provider.UpdatedAt = DateTime.UtcNow;
+
+            await db.SaveChangesAsync();
+            return await MapToDto(provider.Id);
+        }
+
+        public async Task ApproveAsync(Guid providerId)
+        {
+            var provider = await db.Providers.FindAsync(providerId)
+                ?? throw new NotFoundException("Provider not found.");
+
+            provider.Status = ProviderStatus.Approved;
+            provider.UpdatedAt = DateTime.UtcNow;
+            await db.SaveChangesAsync();
+        }
+
+        public async Task RejectAsync(Guid providerId)
+        {
+            var provider = await db.Providers.FindAsync(providerId)
+                ?? throw new NotFoundException("Provider not found.");
+
+            provider.Status = ProviderStatus.Rejected;
+            provider.UpdatedAt = DateTime.UtcNow;
+            await db.SaveChangesAsync();
+        }
+
+        private async Task<ResponseProviderDto> MapToDto(Guid providerId)
+        {
+            var provider = await db.Providers
+                .Include(p => p.User)
+                .Include(p => p.Reviews)
+                .FirstAsync(p => p.Id == providerId);
+
+            return new ResponseProviderDto
+            {
+                Id = provider.Id,
+                BusinessName = provider.BusinessName,
+                Category = provider.Category,
+                Description = provider.Description,
+                Status = provider.Status.ToString(),
+                OwnerFullName = provider.User.FullName,
+                AverageRating = provider.Reviews.Any() ? Math.Round(provider.Reviews.Average(r => r.Rating), 1) : 0,
+                ReviewCount = provider.Reviews.Count,
+                CreatedAt = provider.CreatedAt
+            };
+        }
+    }
+}
