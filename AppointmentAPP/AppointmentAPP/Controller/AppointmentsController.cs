@@ -91,5 +91,14 @@ namespace AppointmentAPP.Controller
             var result = await appointmentService.GetByIdAsync(User.GetUserId(), id);
             return Ok(ResponseModelHelper.SuccessResult(result));
         }
+
+
+        [Authorize(Roles = "Client")]
+        [HttpGet("me/profile")]
+        public async Task<IActionResult> GetMyClientProfile()
+        {
+            var result = await appointmentService.GetMyClientProfileAsync(User.GetUserId());
+            return Ok(ResponseModelHelper.SuccessResult(result));
+        }
     }
 }

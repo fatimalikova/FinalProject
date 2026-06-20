@@ -90,5 +90,14 @@ namespace AppointmentAPP.Controller
             await providerService.RejectAsync(id);
             return Ok(ResponseModelHelper.SuccessResult("Provider rejected."));
         }
+
+
+        [Authorize(Roles = "Provider")]
+        [HttpGet("me/dashboard")]
+        public async Task<IActionResult> GetMyDashboard()
+        {
+            var result = await providerService.GetMyDashboardAsync(User.GetUserId());
+            return Ok(ResponseModelHelper.SuccessResult(result));
+        }
     }
 }

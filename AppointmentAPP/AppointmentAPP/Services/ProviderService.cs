@@ -149,5 +149,36 @@ namespace AppointmentAPP.Services
                 Longitude = provider.Longitude
             };
         }
+
+        // Dashboard üçün məlumatları toplayır
+        public async Task<ProviderDashboardDto> GetMyDashboardAsync(Guid userId)
+        {
+            var provider = await db.Providers.FirstOrDefaultAsync(p => p.UserId == userId)
+                ?? throw new NotFoundException("Provider profile not found.");
+
+            var profile = await MapToDto(provider.Id);
+            var today = DateTime.UtcNow.Date;
+
+            var totalServices = await db.Services.CountAsync(s => s.ProviderId == provider.Id && s.IsActive);
+
+            var todayCount = await db.Appointments.CountAsync(a =>
+                a.ProviderId == provider.Id &&
+                a.StartDateTime.Date == today &&
+                a.Status != AppointmentStatus.Cancelled);
+
+            var weekCount = await db.Appointments.CountAsync(a =>
+                a.ProviderId == provider.Id &&
+                a.StartDateTime.Date >= today &&
+                a.StartDateTime.Date <= today.AddDays(7) &&
+                a.Status != AppointmentStatus.Cancelled);
+
+            return new ProviderDashboardDto
+            {
+                Profile = profile,
+                TotalServices = totalServices,
+                TodayAppointmentsCount = todayCount,
+                UpcomingWeekAppointmentsCount = weekCount
+            };
+        }
     }
 }

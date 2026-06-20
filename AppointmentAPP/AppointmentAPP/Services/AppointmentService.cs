@@ -1,5 +1,6 @@
 ﻿using AppointmentAPP.Data;
 using AppointmentAPP.Dtos.AppointmentDtos;
+using AppointmentAPP.Dtos.ClientDtos;
 using AppointmentAPP.Enums;
 using AppointmentAPP.Exceptions;
 using AppointmentAPP.Models;
@@ -326,5 +327,32 @@ namespace AppointmentAPP.Services
             Status = a.Status.ToString(),
             Notes = a.Notes
         };
+
+
+        public async Task<ClientProfileResponseDto> GetMyClientProfileAsync(Guid userId)
+        {
+            var user = await db.Users.FirstAsync(u => u.Id == userId);
+            var now = DateTime.UtcNow;
+
+            var upcoming = await db.Appointments.CountAsync(a =>
+                a.ClientId == userId && a.StartDateTime >= now && a.Status != AppointmentStatus.Cancelled);
+
+            var past = await db.Appointments.CountAsync(a =>
+                a.ClientId == userId && (a.StartDateTime < now || a.Status == AppointmentStatus.Completed));
+
+            var reviewsCount = await db.Reviews.CountAsync(r => r.ClientId == userId);
+
+            return new ClientProfileResponseDto
+            {
+                UserId = user.Id,
+                FullName = user.FullName,
+                Email = user.Email!,
+                UserName = user.UserName!,
+                CreatedAt = user.CreatedAt,
+                UpcomingAppointmentsCount = upcoming,
+                PastAppointmentsCount = past,
+                ReviewsWrittenCount = reviewsCount
+            };
+        }
     }
 }

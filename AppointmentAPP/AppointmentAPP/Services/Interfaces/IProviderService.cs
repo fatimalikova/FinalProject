@@ -12,5 +12,6 @@ namespace AppointmentAPP.Services.Interfaces
         Task<ResponseProviderDto> UpdateAsync(Guid userId, UpdateProviderDto dto);
         Task ApproveAsync(Guid providerId);
         Task RejectAsync(Guid providerId);
+        Task<ProviderDashboardDto> GetMyDashboardAsync(Guid userId);
     }
 }

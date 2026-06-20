@@ -1,4 +1,5 @@
 ﻿using AppointmentAPP.Dtos.AppointmentDtos;
+using AppointmentAPP.Dtos.ClientDtos;
 
 namespace AppointmentAPP.Services.Interfaces
 {
@@ -12,5 +13,6 @@ namespace AppointmentAPP.Services.Interfaces
         Task<List<AppointmentResponseDto>> GetProviderCalendarAsync(Guid providerUserId, DateTime from, DateTime to);
         Task AutoCompletePastAppointmentsAsync();
         Task<AppointmentResponseDto> GetByIdAsync(Guid userId, Guid appointmentId);
+        Task<ClientProfileResponseDto> GetMyClientProfileAsync(Guid userId);
     }
 }
