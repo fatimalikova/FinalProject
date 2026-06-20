@@ -19,6 +19,9 @@ namespace AppointmentAPP.Models
         public Guid UserId { get; set; }
         public AppUser User { get; set; }
 
+        public List<ProviderPost> Posts { get; set; } = new();
+        public List<Follow> Followers { get; set; } = new();
+
         public List<Service> Services { get; set; } = new();
         public List<WorkingHour> WorkingHours { get; set; } = new();
         public List<UnavailableDay> UnavailableDays { get; set; } = new();

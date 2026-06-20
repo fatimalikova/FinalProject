@@ -44,6 +44,12 @@ namespace AppointmentAPP.Data.Configurations
                 .WithOne(r => r.Provider)
                 .HasForeignKey(r => r.ProviderId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany(p => p.Posts)
+            .WithOne(post => post.Provider)
+            .HasForeignKey(post => post.ProviderId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }
