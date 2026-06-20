@@ -64,5 +64,22 @@ namespace AppointmentAPP.Controller
             await serviceManagementService.DeleteAsync(User.GetUserId(), id);
             return Ok(ResponseModelHelper.SuccessResult("Service deleted."));
         }
+
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("admin/all")]
+        public async Task<IActionResult> GetAllForAdmin([FromQuery] Guid? providerId, [FromQuery] bool? isActive)
+        {
+            var result = await serviceManagementService.GetAllForAdminAsync(providerId, isActive);
+            return Ok(ResponseModelHelper.SuccessResult(result));
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("{id:guid}/admin-deactivate")]
+        public async Task<IActionResult> DeactivateByAdmin(Guid id)
+        {
+            await serviceManagementService.DeactivateByAdminAsync(id);
+            return Ok(ResponseModelHelper.SuccessResult("Service deactivated by admin."));
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace AppointmentAPP.Models
         public int DefaultSlotIntervalMinutes { get; set; } = 15;
 
         // Reminder qaydaları
-        public int ReminderHoursBeforeAppointment { get; set; } = 24;
+        public int ReminderHoursBeforeAppointment { get; set; } = 1;
 
         // Provider approval
         public bool RequireProviderApproval { get; set; } = true;

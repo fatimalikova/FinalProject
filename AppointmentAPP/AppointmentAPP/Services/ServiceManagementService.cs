@@ -108,5 +108,31 @@ namespace AppointmentAPP.Services
             ProviderId = s.ProviderId,
             ProviderBusinessName = providerName
         };
+
+
+        public async Task<List<ResponseServiceDto>> GetAllForAdminAsync(Guid? providerId, bool? isActive)
+        {
+            var query = db.Services.Include(s => s.Provider).AsQueryable();
+
+            if (providerId.HasValue)
+                query = query.Where(s => s.ProviderId == providerId.Value);
+
+            if (isActive.HasValue)
+                query = query.Where(s => s.IsActive == isActive.Value);
+
+            var services = await query.OrderByDescending(s => s.CreatedAt).ToListAsync();
+
+            return services.Select(s => MapToDto(s, s.Provider.BusinessName)).ToList();
+        }
+
+        public async Task DeactivateByAdminAsync(Guid serviceId)
+        {
+            var service = await db.Services.FirstOrDefaultAsync(s => s.Id == serviceId)
+                ?? throw new NotFoundException("Service not found.");
+
+            service.IsActive = false;
+            service.UpdatedAt = DateTime.UtcNow;
+            await db.SaveChangesAsync();
+        }
     }
 }

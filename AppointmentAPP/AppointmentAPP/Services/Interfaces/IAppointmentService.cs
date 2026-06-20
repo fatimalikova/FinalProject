@@ -10,6 +10,7 @@ namespace AppointmentAPP.Services.Interfaces
         Task<AppointmentResponseDto> CompleteAsync(Guid providerUserId, Guid appointmentId);
         Task<List<AppointmentResponseDto>> GetMyAppointmentsAsync(Guid clientUserId, string? filter);
         Task<List<AppointmentResponseDto>> GetProviderCalendarAsync(Guid providerUserId, DateTime from, DateTime to);
-        Task AutoCompletePastAppointmentsAsync(); // background job çağırır
+        Task AutoCompletePastAppointmentsAsync();
+        Task<AppointmentResponseDto> GetByIdAsync(Guid userId, Guid appointmentId);
     }
 }

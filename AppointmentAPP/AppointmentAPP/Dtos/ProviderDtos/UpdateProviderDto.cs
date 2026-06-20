@@ -8,6 +8,9 @@ namespace AppointmentAPP.Dtos.ProviderDtos
         public string BusinessName { get; set; }
         public string Category { get; set; }
         public string? Description { get; set; }
+        public string Address { get; set; }
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
     }
 
 
@@ -28,6 +31,18 @@ namespace AppointmentAPP.Dtos.ProviderDtos
             RuleFor(x => x.Description)
                 .MaximumLength(1000).WithMessage("Description cannot exceed 1000 characters.")
                 .When(x => x.Description != null);
+
+            RuleFor(x => x.Address)
+            .NotEmpty().WithMessage("Address is required.")
+            .MaximumLength(300).WithMessage("Address cannot exceed 300 characters.");
+
+            RuleFor(x => x.Latitude)
+                .InclusiveBetween(-90, 90).WithMessage("Invalid latitude.")
+                .When(x => x.Latitude.HasValue);
+
+            RuleFor(x => x.Longitude)
+                .InclusiveBetween(-180, 180).WithMessage("Invalid longitude.")
+                .When(x => x.Longitude.HasValue);
         }
     }
 }

@@ -82,5 +82,14 @@ namespace AppointmentAPP.Controller
             var result = await appointmentService.GetProviderCalendarAsync(User.GetUserId(), from, to);
             return Ok(ResponseModelHelper.SuccessResult(result));
         }
+
+        //kimsə özünə aid olmayan appointment-in detalına baxa bilməsin deyə 
+        [Authorize(Roles = "Client,Provider")]
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var result = await appointmentService.GetByIdAsync(User.GetUserId(), id);
+            return Ok(ResponseModelHelper.SuccessResult(result));
+        }
     }
 }

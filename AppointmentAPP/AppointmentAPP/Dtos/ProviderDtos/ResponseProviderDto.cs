@@ -15,5 +15,8 @@ namespace AppointmentAPP.Dtos.ProviderDtos
         public double AverageRating { get; set; }
         public int ReviewCount { get; set; }
         public DateTime CreatedAt { get; set; }
+        public string Address { get; set; }
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
     }
 }

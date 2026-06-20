@@ -25,6 +25,9 @@ namespace AppointmentAPP.Services
                 BusinessName = dto.BusinessName,
                 Category = dto.Category,
                 Description = dto.Description,
+                Address = dto.Address,
+                Latitude = dto.Latitude,
+                Longitude = dto.Longitude,
                 Status = requireApproval ? ProviderStatus.Pending : ProviderStatus.Approved
             };
 
@@ -140,7 +143,10 @@ namespace AppointmentAPP.Services
                 OwnerFullName = provider.User.FullName,
                 AverageRating = provider.Reviews.Any() ? Math.Round(provider.Reviews.Average(r => r.Rating), 1) : 0,
                 ReviewCount = provider.Reviews.Count,
-                CreatedAt = provider.CreatedAt
+                CreatedAt = provider.CreatedAt,
+                Address = provider.Address,
+                Latitude = provider.Latitude,
+                Longitude = provider.Longitude
             };
         }
     }

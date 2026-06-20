@@ -9,5 +9,7 @@ namespace AppointmentAPP.Services.Interfaces
         Task DeleteAsync(Guid userId, Guid serviceId);
         Task<List<ResponseServiceDto>> GetByProviderAsync(Guid providerId);
         Task<List<ResponseServiceDto>> GetMyServicesAsync(Guid userId);
+        Task<List<ResponseServiceDto>> GetAllForAdminAsync(Guid? providerId, bool? isActive);
+        Task DeactivateByAdminAsync(Guid serviceId);
     }
 }
