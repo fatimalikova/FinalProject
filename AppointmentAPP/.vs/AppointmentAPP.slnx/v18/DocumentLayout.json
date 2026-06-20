@@ -3,8 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|c:\\users\\fmeli\\onedrive\\desktop\\appointment\\appointmentapp\\appointmentapp\\controller\\appointmentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|solutionrelative:appointmentapp\\controller\\appointmentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|c:\\users\\fmeli\\onedrive\\desktop\\appointment\\appointmentapp\\appointmentapp\\data\\configurations\\followconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|solutionrelative:appointmentapp\\data\\configurations\\followconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|c:\\users\\fmeli\\onedrive\\desktop\\appointment\\appointmentapp\\appointmentapp\\data\\configurations\\postlikeconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|solutionrelative:appointmentapp\\data\\configurations\\postlikeconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|c:\\users\\fmeli\\onedrive\\desktop\\appointment\\appointmentapp\\appointmentapp\\data\\configurations\\postcommentconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|solutionrelative:appointmentapp\\data\\configurations\\postcommentconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|c:\\users\\fmeli\\onedrive\\desktop\\appointment\\appointmentapp\\appointmentapp\\data\\configurations\\providerpostconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|solutionrelative:appointmentapp\\data\\configurations\\providerpostconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|c:\\users\\fmeli\\onedrive\\desktop\\appointment\\appointmentapp\\appointmentapp\\data\\configurations\\providerconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|solutionrelative:appointmentapp\\data\\configurations\\providerconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|c:\\users\\fmeli\\onedrive\\desktop\\appointment\\appointmentapp\\appointmentapp\\data\\migrations\\20260618111217_mig_1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|solutionrelative:appointmentapp\\data\\migrations\\20260618111217_mig_1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|c:\\users\\fmeli\\onedrive\\desktop\\appointment\\appointmentapp\\appointmentapp\\data\\migrations\\20260619200253_mig_2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D5CF8DD-B38A-F066-C52A-DE305A38773B}|AppointmentAPP\\AppointmentAPP.csproj|solutionrelative:appointmentapp\\data\\migrations\\20260619200253_mig_2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,8 +38,99 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 6,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ProviderConfiguration.cs",
+              "DocumentMoniker": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Data\\Configurations\\ProviderConfiguration.cs",
+              "RelativeDocumentMoniker": "AppointmentAPP\\Data\\Configurations\\ProviderConfiguration.cs",
+              "ToolTip": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Data\\Configurations\\ProviderConfiguration.cs",
+              "RelativeToolTip": "AppointmentAPP\\Data\\Configurations\\ProviderConfiguration.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAAAUwDIAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-20T20:18:17.032Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ProviderPostConfiguration.cs",
+              "DocumentMoniker": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Data\\Configurations\\ProviderPostConfiguration.cs",
+              "RelativeDocumentMoniker": "AppointmentAPP\\Data\\Configurations\\ProviderPostConfiguration.cs",
+              "ToolTip": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Data\\Configurations\\ProviderPostConfiguration.cs",
+              "RelativeToolTip": "AppointmentAPP\\Data\\Configurations\\ProviderPostConfiguration.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABUAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-20T20:22:23.303Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "PostLikeConfiguration.cs",
+              "DocumentMoniker": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Data\\Configurations\\PostLikeConfiguration.cs",
+              "RelativeDocumentMoniker": "AppointmentAPP\\Data\\Configurations\\PostLikeConfiguration.cs",
+              "ToolTip": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Data\\Configurations\\PostLikeConfiguration.cs",
+              "RelativeToolTip": "AppointmentAPP\\Data\\Configurations\\PostLikeConfiguration.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-20T20:17:27.36Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PostCommentConfiguration.cs",
+              "DocumentMoniker": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Data\\Configurations\\PostCommentConfiguration.cs",
+              "RelativeDocumentMoniker": "AppointmentAPP\\Data\\Configurations\\PostCommentConfiguration.cs",
+              "ToolTip": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Data\\Configurations\\PostCommentConfiguration.cs",
+              "RelativeToolTip": "AppointmentAPP\\Data\\Configurations\\PostCommentConfiguration.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-20T20:17:09.301Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "20260618111217_mig_1.cs",
+              "DocumentMoniker": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Data\\Migrations\\20260618111217_mig_1.cs",
+              "RelativeDocumentMoniker": "AppointmentAPP\\Data\\Migrations\\20260618111217_mig_1.cs",
+              "ToolTip": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Data\\Migrations\\20260618111217_mig_1.cs",
+              "RelativeToolTip": "AppointmentAPP\\Data\\Migrations\\20260618111217_mig_1.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-20T20:12:28.436Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "20260619200253_mig_2.cs",
+              "DocumentMoniker": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Data\\Migrations\\20260619200253_mig_2.cs",
+              "RelativeDocumentMoniker": "AppointmentAPP\\Data\\Migrations\\20260619200253_mig_2.cs",
+              "ToolTip": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Data\\Migrations\\20260619200253_mig_2.cs",
+              "RelativeToolTip": "AppointmentAPP\\Data\\Migrations\\20260619200253_mig_2.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-20T20:12:26.505Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "FollowConfiguration.cs",
+              "DocumentMoniker": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Data\\Configurations\\FollowConfiguration.cs",
+              "RelativeDocumentMoniker": "AppointmentAPP\\Data\\Configurations\\FollowConfiguration.cs",
+              "ToolTip": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Data\\Configurations\\FollowConfiguration.cs",
+              "RelativeToolTip": "AppointmentAPP\\Data\\Configurations\\FollowConfiguration.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-20T20:11:31.07Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
@@ -35,19 +150,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "AppointmentsController.cs",
-              "DocumentMoniker": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Controller\\AppointmentsController.cs",
-              "RelativeDocumentMoniker": "AppointmentAPP\\Controller\\AppointmentsController.cs",
-              "ToolTip": "C:\\Users\\fmeli\\OneDrive\\Desktop\\Appointment\\AppointmentAPP\\AppointmentAPP\\Controller\\AppointmentsController.cs",
-              "RelativeToolTip": "AppointmentAPP\\Controller\\AppointmentsController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGUAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-20T07:27:49.872Z",
-              "EditorCaption": ""
             }
           ]
         }

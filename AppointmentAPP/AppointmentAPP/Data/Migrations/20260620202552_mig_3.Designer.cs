@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppointmentAPP.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260620075840_mig_3")]
+    [Migration("20260620202552_mig_3")]
     partial class mig_3
     {
         /// <inheritdoc />
@@ -172,6 +172,34 @@ namespace AppointmentAPP.Data.Migrations
                     b.ToTable("Appointments");
                 });
 
+            modelBuilder.Entity("AppointmentAPP.Models.Follow", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("FollowerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProviderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProviderId");
+
+                    b.HasIndex("FollowerId", "ProviderId")
+                        .IsUnique();
+
+                    b.ToTable("Follows");
+                });
+
             modelBuilder.Entity("AppointmentAPP.Models.Notification", b =>
                 {
                     b.Property<Guid>("Id")
@@ -212,11 +240,75 @@ namespace AppointmentAPP.Data.Migrations
                     b.ToTable("Notifications");
                 });
 
+            modelBuilder.Entity("AppointmentAPP.Models.PostComment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PostComments");
+                });
+
+            modelBuilder.Entity("AppointmentAPP.Models.PostLike", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("PostId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("PostLikes");
+                });
+
             modelBuilder.Entity("AppointmentAPP.Models.Provider", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BusinessName")
                         .IsRequired()
@@ -239,6 +331,12 @@ namespace AppointmentAPP.Data.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<double?>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Longitude")
+                        .HasColumnType("float");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -254,6 +352,38 @@ namespace AppointmentAPP.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Providers");
+                });
+
+            modelBuilder.Entity("AppointmentAPP.Models.ProviderPost", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Caption")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<Guid>("ProviderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProviderId");
+
+                    b.ToTable("ProviderPosts");
                 });
 
             modelBuilder.Entity("AppointmentAPP.Models.Review", b =>
@@ -584,6 +714,25 @@ namespace AppointmentAPP.Data.Migrations
                     b.Navigation("Service");
                 });
 
+            modelBuilder.Entity("AppointmentAPP.Models.Follow", b =>
+                {
+                    b.HasOne("AppointmentAPP.Models.AppUser", "Follower")
+                        .WithMany()
+                        .HasForeignKey("FollowerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AppointmentAPP.Models.Provider", "Provider")
+                        .WithMany("Followers")
+                        .HasForeignKey("ProviderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Follower");
+
+                    b.Navigation("Provider");
+                });
+
             modelBuilder.Entity("AppointmentAPP.Models.Notification", b =>
                 {
                     b.HasOne("AppointmentAPP.Models.AppUser", "User")
@@ -591,6 +740,44 @@ namespace AppointmentAPP.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AppointmentAPP.Models.PostComment", b =>
+                {
+                    b.HasOne("AppointmentAPP.Models.ProviderPost", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AppointmentAPP.Models.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AppointmentAPP.Models.PostLike", b =>
+                {
+                    b.HasOne("AppointmentAPP.Models.ProviderPost", "Post")
+                        .WithMany("Likes")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AppointmentAPP.Models.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Post");
 
                     b.Navigation("User");
                 });
@@ -604,6 +791,17 @@ namespace AppointmentAPP.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AppointmentAPP.Models.ProviderPost", b =>
+                {
+                    b.HasOne("AppointmentAPP.Models.Provider", "Provider")
+                        .WithMany("Posts")
+                        .HasForeignKey("ProviderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Provider");
                 });
 
             modelBuilder.Entity("AppointmentAPP.Models.Review", b =>
@@ -724,6 +922,10 @@ namespace AppointmentAPP.Data.Migrations
                 {
                     b.Navigation("Appointments");
 
+                    b.Navigation("Followers");
+
+                    b.Navigation("Posts");
+
                     b.Navigation("Reviews");
 
                     b.Navigation("Services");
@@ -731,6 +933,13 @@ namespace AppointmentAPP.Data.Migrations
                     b.Navigation("UnavailableDays");
 
                     b.Navigation("WorkingHours");
+                });
+
+            modelBuilder.Entity("AppointmentAPP.Models.ProviderPost", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("Likes");
                 });
 
             modelBuilder.Entity("AppointmentAPP.Models.Service", b =>
