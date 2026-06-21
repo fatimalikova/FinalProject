@@ -23,8 +23,7 @@ namespace AppointmentAPP
             services.AddControllers();
             services.AddValidatorsFromAssemblyContaining<Program>();
 
-            //using custom response model for exception handling and validation errors
-
+            // using custom response model for exception handling and validation errors
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.InvalidModelStateResponseFactory = context =>
@@ -66,15 +65,12 @@ namespace AppointmentAPP
                 });
             });
 
-
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-
 
             services.AddIdentity<AppUser, IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
-
 
             services.AddAuthentication(options =>
             {
@@ -93,12 +89,27 @@ namespace AppointmentAPP
                     ValidAudience = configuration["JWT:Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]))
                 };
+
+                // 🔑 SignalR üçün — brauzer WebSocket-də Authorization header set edə bilmir,
+                // token query string vasitəsilə ötürülür, burada oxunur
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+                        var path = context.HttpContext.Request.Path;
+
+                        if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs/chat"))
+                            context.Token = accessToken;
+
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
             services.AddAutoMapper(typeof(MapperProfile).Assembly);
 
-
-            //services registration for dependency injection
+            // services registration for dependency injection
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IFileUploadService, FileUploadService>();
             services.AddScoped<IEmailService, EmailService>();
@@ -111,9 +122,10 @@ namespace AppointmentAPP
             services.AddScoped<ISystemSettingService, SystemSettingService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IFollowService, FollowService>();
+            services.AddScoped<IMessageService, MessageService>();
 
+            services.AddSignalR();
 
-            services.AddHostedService<ReminderBackgroundService>();
             services.AddFluentValidationAutoValidation();
             services.AddHostedService<ReminderBackgroundService>();
 
