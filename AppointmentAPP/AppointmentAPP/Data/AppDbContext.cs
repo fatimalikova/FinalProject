@@ -9,16 +9,10 @@ namespace AppointmentAPP.Data
     {
         public DbSet<Conversation> Conversations { get; set; }
         public DbSet<Message> Messages { get; set; }
-        public AppDbContext(DbContextOptions<AppDbContext> options)
-        : base(options)
-        {
-        }
-
         public DbSet<ProviderPost> ProviderPosts { get; set; }
         public DbSet<PostLike> PostLikes { get; set; }
         public DbSet<PostComment> PostComments { get; set; }
         public DbSet<Follow> Follows { get; set; }
-
         public DbSet<Provider> Providers { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<WorkingHour> WorkingHours { get; set; }

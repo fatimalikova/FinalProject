@@ -1,9 +1,7 @@
-
 using AppointmentAPP;
 using AppointmentAPP.Data;
 using AppointmentAPP.Extensions;
-using AppointmentAPP.Models;
-using Microsoft.AspNetCore.Identity;
+using AppointmentAPP.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
@@ -11,6 +9,7 @@ var config = builder.Configuration;
 builder.Services.AddApplicationServices(builder.Configuration);
 
 var app = builder.Build();
+
 app.UseGlobalException();
 app.UseStaticFiles();
 
@@ -22,11 +21,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<ChatHub>("/hubs/chat");
 
 using (var scope = app.Services.CreateScope())
 {
@@ -34,4 +33,5 @@ using (var scope = app.Services.CreateScope())
     await RoleSeeder.SeedAsync(services);
     await UserSeeder.SeedAsync(services);
 }
+
 app.Run();
