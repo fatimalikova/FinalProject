@@ -97,6 +97,8 @@ namespace AppointmentAPP
 
             services.AddAutoMapper(typeof(MapperProfile).Assembly);
 
+
+            //services registration for dependency injection
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IFileUploadService, FileUploadService>();
             services.AddScoped<IEmailService, EmailService>();
@@ -107,6 +109,10 @@ namespace AppointmentAPP
             services.AddScoped<IAppointmentService, AppointmentService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<ISystemSettingService, SystemSettingService>();
+            services.AddScoped<IPostService, PostService>();
+            services.AddScoped<IFollowService, FollowService>();
+
+
             services.AddHostedService<ReminderBackgroundService>();
             services.AddFluentValidationAutoValidation();
             services.AddHostedService<ReminderBackgroundService>();
