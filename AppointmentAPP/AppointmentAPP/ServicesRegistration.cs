@@ -96,6 +96,7 @@ namespace AppointmentAPP
             });
 
             services.AddAutoMapper(typeof(MapperProfile).Assembly);
+
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IFileUploadService, FileUploadService>();
             services.AddScoped<IEmailService, EmailService>();

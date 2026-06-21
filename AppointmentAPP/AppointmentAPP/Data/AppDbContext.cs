@@ -7,11 +7,8 @@ namespace AppointmentAPP.Data
 {
     public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options)
-        : base(options)
-        {
-        }
-
+        public DbSet<Conversation> Conversations { get; set; }
+        public DbSet<Message> Messages { get; set; }
         public DbSet<Provider> Providers { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<WorkingHour> WorkingHours { get; set; }
@@ -20,6 +17,11 @@ namespace AppointmentAPP.Data
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<SystemSetting> SystemSettings { get; set; }
+
+        public AppDbContext(DbContextOptions<AppDbContext> options)
+        : base(options)
+        {
+        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
