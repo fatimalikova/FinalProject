@@ -1,8 +1,8 @@
 ﻿using AppointmentAPP.Data;
 using AppointmentAPP.Dtos.MessageDtos;
 using AppointmentAPP.Exceptions;
+using AppointmentAPP.Interfaces;
 using AppointmentAPP.Models;
-using AppointmentAPP.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppointmentAPP.Services

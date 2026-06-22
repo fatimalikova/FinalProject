@@ -1,6 +1,6 @@
 ﻿using AppointmentAPP.Dtos.WorkingHourDtos;
 
-namespace AppointmentAPP.Services.Interfaces
+namespace AppointmentAPP.Interfaces
 {
     public interface IWorkingHourService
     {

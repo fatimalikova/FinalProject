@@ -1,11 +1,12 @@
 ﻿using AppointmentAPP.Data;
 using AppointmentAPP.Dtos.Availability;
 using AppointmentAPP.Enums;
+using AppointmentAPP.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppointmentAPP.Services
 {
-    public class AvailabilityService(AppDbContext db) : Interfaces.IAvailabilityService
+    public class AvailabilityService(AppDbContext db) : IAvailabilityService
     {
         public async Task<List<AvailableSlotDto>> GetAvailableSlotsAsync(AvailabilityRequestDto request)
         {

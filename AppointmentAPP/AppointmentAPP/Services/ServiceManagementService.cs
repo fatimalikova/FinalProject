@@ -1,8 +1,9 @@
 ﻿using AppointmentAPP.Data;
 using AppointmentAPP.Dtos.ServiceDtos;
-using AppointmentAPP.Models;
-using AppointmentAPP.Services.Interfaces;
+using AppointmentAPP.Enums;
 using AppointmentAPP.Exceptions;
+using AppointmentAPP.Interfaces;
+using AppointmentAPP.Models;
 using Microsoft.EntityFrameworkCore;
 using ServiceEntity = AppointmentAPP.Models.Service;
 
@@ -133,6 +134,69 @@ namespace AppointmentAPP.Services
             service.IsActive = false;
             service.UpdatedAt = DateTime.UtcNow;
             await db.SaveChangesAsync();
+        }
+
+        public async Task<List<ServiceCatalogItemDto>> GetCatalogAsync()
+        {
+            var services = await db.Services
+                .Where(s => s.IsActive
+                            && s.Provider.Status == ProviderStatus.Approved
+                            && s.Provider.IsActive)
+                .Select(s => new { s.Name, s.Price })
+                .ToListAsync();
+
+            return services
+                .GroupBy(s => s.Name.Trim(), StringComparer.OrdinalIgnoreCase)
+                .Select(g => new ServiceCatalogItemDto
+                {
+                    Name = g.Key,
+                    MinPrice = g.Min(x => x.Price),
+                    MaxPrice = g.Max(x => x.Price),
+                    ProviderCount = g.Count()
+                })
+                .OrderBy(x => x.Name)
+                .ToList();
+        }
+
+        public async Task<List<ServiceSearchResultDto>> SearchByNameAsync(string name)
+        {
+            var normalized = name.Trim().ToLower();
+
+            var services = await db.Services
+                .Include(s => s.Provider)
+                .Where(s => s.IsActive
+                            && s.Provider.Status == ProviderStatus.Approved
+                            && s.Provider.IsActive
+                            && s.Name.Trim().ToLower() == normalized)
+                .ToListAsync();
+
+            var providerIds = services.Select(s => s.ProviderId).Distinct().ToList();
+
+            var reviewStats = await db.Reviews
+                .Where(r => providerIds.Contains(r.ProviderId))
+                .GroupBy(r => r.ProviderId)
+                .Select(g => new { ProviderId = g.Key, Avg = g.Average(r => r.Rating), Count = g.Count() })
+                .ToListAsync();
+
+            return services.Select(s =>
+            {
+                var stats = reviewStats.FirstOrDefault(r => r.ProviderId == s.ProviderId);
+                return new ServiceSearchResultDto
+                {
+                    ServiceId = s.Id,
+                    ServiceName = s.Name,
+                    Price = s.Price,
+                    DurationMinutes = s.DurationMinutes,
+                    ProviderId = s.ProviderId,
+                    ProviderBusinessName = s.Provider.BusinessName,
+                    ProviderCategory = s.Provider.Category,
+                    ProviderAddress = s.Provider.Address,
+                    AverageRating = stats is not null ? Math.Round(stats.Avg, 1) : 0,
+                    ReviewCount = stats?.Count ?? 0
+                };
+            })
+            .OrderByDescending(x => x.AverageRating)
+            .ToList();
         }
     }
 }

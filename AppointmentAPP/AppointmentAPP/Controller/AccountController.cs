@@ -1,8 +1,8 @@
 ﻿using AppointmentAPP.Dtos.Login_RegisterDtos;
 using AppointmentAPP.Dtos.UserDtos;
 using AppointmentAPP.Helpers;
+using AppointmentAPP.Interfaces;
 using AppointmentAPP.Models;
-using AppointmentAPP.Services.Interfaces;
 using AutoMapper;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;

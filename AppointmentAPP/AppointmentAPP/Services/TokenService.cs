@@ -1,5 +1,5 @@
-﻿using AppointmentAPP.Models;
-using AppointmentAPP.Services.Interfaces;
+﻿using AppointmentAPP.Interfaces;
+using AppointmentAPP.Models;
 using AppointmentAPP.Settings;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

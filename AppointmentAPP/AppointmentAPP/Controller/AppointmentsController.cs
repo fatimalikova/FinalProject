@@ -1,11 +1,11 @@
 ﻿using AppointmentAPP.Controller;
 using AppointmentAPP.Dtos.AppointmentDtos;
 using AppointmentAPP.Helpers;
-using AppointmentAPP.Services.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using AppointmentAPP.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using AppointmentAPP.Interfaces;
 
 namespace AppointmentAPP.Controller
 {

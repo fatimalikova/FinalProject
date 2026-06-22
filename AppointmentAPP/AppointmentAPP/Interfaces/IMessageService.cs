@@ -1,6 +1,6 @@
 ﻿using AppointmentAPP.Dtos.MessageDtos;
 
-namespace AppointmentAPP.Services.Interfaces
+namespace AppointmentAPP.Interfaces
 {
     public interface IMessageService
     {

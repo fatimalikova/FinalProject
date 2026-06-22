@@ -2,10 +2,11 @@
 using AppointmentAPP.Dtos.NotificationDtos;
 using AppointmentAPP.Enums;
 using AppointmentAPP.Exceptions;
+using AppointmentAPP.Interfaces;
 using AppointmentAPP.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AppointmentAPP.Services.Interfaces
+namespace AppointmentAPP.Services
 {
     public class NotificationService(AppDbContext db) : INotificationService
     {

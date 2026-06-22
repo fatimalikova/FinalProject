@@ -1,6 +1,6 @@
 ﻿using AppointmentAPP.Dtos.MessageDtos;
 using AppointmentAPP.Extensions;
-using AppointmentAPP.Services.Interfaces;
+using AppointmentAPP.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;

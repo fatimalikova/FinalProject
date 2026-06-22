@@ -1,7 +1,7 @@
 ﻿using AppointmentAPP.Data;
 using AppointmentAPP.Dtos.SystemSetting;
+using AppointmentAPP.Interfaces;
 using AppointmentAPP.Models;
-using AppointmentAPP.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppointmentAPP.Services

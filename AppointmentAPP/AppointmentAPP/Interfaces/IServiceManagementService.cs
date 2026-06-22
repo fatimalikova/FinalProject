@@ -1,6 +1,6 @@
 ﻿using AppointmentAPP.Dtos.ServiceDtos;
 
-namespace AppointmentAPP.Services.Interfaces
+namespace AppointmentAPP.Interfaces
 {
     public interface IServiceManagementService
     {
@@ -11,5 +11,7 @@ namespace AppointmentAPP.Services.Interfaces
         Task<List<ResponseServiceDto>> GetMyServicesAsync(Guid userId);
         Task<List<ResponseServiceDto>> GetAllForAdminAsync(Guid? providerId, bool? isActive);
         Task DeactivateByAdminAsync(Guid serviceId);
+        Task<List<ServiceCatalogItemDto>> GetCatalogAsync();
+        Task<List<ServiceSearchResultDto>> SearchByNameAsync(string name);
     }
 }

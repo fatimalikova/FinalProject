@@ -1,4 +1,4 @@
-﻿namespace AppointmentAPP.Services.Interfaces
+﻿namespace AppointmentAPP.Interfaces
 {
     public interface IFileUploadService
     {

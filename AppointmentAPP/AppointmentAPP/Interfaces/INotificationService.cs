@@ -1,7 +1,7 @@
 ﻿using AppointmentAPP.Dtos.NotificationDtos;
 using AppointmentAPP.Enums;
 
-namespace AppointmentAPP.Services.Interfaces
+namespace AppointmentAPP.Interfaces
 {
     public interface INotificationService
     {

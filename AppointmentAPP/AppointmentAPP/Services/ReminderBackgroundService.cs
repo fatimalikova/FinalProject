@@ -1,6 +1,6 @@
 ﻿using AppointmentAPP.Data;
 using AppointmentAPP.Enums;
-using AppointmentAPP.Services.Interfaces;
+using AppointmentAPP.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppointmentAPP.Services

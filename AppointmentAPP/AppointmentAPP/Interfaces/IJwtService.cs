@@ -1,7 +1,7 @@
 ﻿using AppointmentAPP.Models;
 using System.Security.Claims;
 
-namespace AppointmentAPP.Services.Interfaces
+namespace AppointmentAPP.Interfaces
 {
     public interface IJwtService
     {

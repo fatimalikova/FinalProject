@@ -1,7 +1,7 @@
 ﻿using AppointmentAPP.Dtos.AppointmentDtos;
 using AppointmentAPP.Dtos.ClientDtos;
 
-namespace AppointmentAPP.Services.Interfaces
+namespace AppointmentAPP.Interfaces
 {
     public interface IAppointmentService
     {

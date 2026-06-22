@@ -1,6 +1,6 @@
 ﻿using AppointmentAPP.Dtos.ProviderDtos;
 
-namespace AppointmentAPP.Services.Interfaces
+namespace AppointmentAPP.Interfaces
 {
     public interface IProviderService
     {

@@ -1,7 +1,7 @@
 ﻿using AppointmentAPP.Dtos.ServiceDtos;
 using AppointmentAPP.Extensions;
 using AppointmentAPP.Helpers;
-using AppointmentAPP.Services.Interfaces;
+using AppointmentAPP.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -80,6 +80,24 @@ namespace AppointmentAPP.Controller
         {
             await serviceManagementService.DeactivateByAdminAsync(id);
             return Ok(ResponseModelHelper.SuccessResult("Service deactivated by admin."));
+        }
+
+
+
+        [AllowAnonymous]
+        [HttpGet("catalog")]
+        public async Task<IActionResult> GetCatalog()
+        {
+            var result = await serviceManagementService.GetCatalogAsync();
+            return Ok(ResponseModelHelper.SuccessResult(result));
+        }
+
+        [AllowAnonymous]
+        [HttpGet("search")]
+        public async Task<IActionResult> Search([FromQuery] string name)
+        {
+            var result = await serviceManagementService.SearchByNameAsync(name);
+            return Ok(ResponseModelHelper.SuccessResult(result));
         }
     }
 }

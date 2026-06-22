@@ -1,6 +1,6 @@
 ﻿using AppointmentAPP.Dtos.SystemSetting;
 
-namespace AppointmentAPP.Services.Interfaces
+namespace AppointmentAPP.Interfaces
 {
     public interface ISystemSettingService
     {

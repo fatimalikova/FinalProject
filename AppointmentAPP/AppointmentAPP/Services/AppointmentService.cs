@@ -3,8 +3,8 @@ using AppointmentAPP.Dtos.AppointmentDtos;
 using AppointmentAPP.Dtos.ClientDtos;
 using AppointmentAPP.Enums;
 using AppointmentAPP.Exceptions;
+using AppointmentAPP.Interfaces;
 using AppointmentAPP.Models;
-using AppointmentAPP.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

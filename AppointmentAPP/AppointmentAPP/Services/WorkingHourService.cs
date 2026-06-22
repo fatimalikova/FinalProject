@@ -1,8 +1,9 @@
 ﻿using AppointmentAPP.Data;
 using AppointmentAPP.Dtos.WorkingHourDtos;
-using AppointmentAPP.Models;
-using AppointmentAPP.Services.Interfaces;
+using AppointmentAPP.Enums;
 using AppointmentAPP.Exceptions;
+using AppointmentAPP.Interfaces;
+using AppointmentAPP.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppointmentAPP.Services
@@ -21,6 +22,35 @@ namespace AppointmentAPP.Services
             {
                 if (d.StartTime >= d.EndTime)
                     throw new BadRequestException($"Invalid hours for {d.Day}: start must be before end.");
+            }
+
+            //Konflikt yoxlanışı — gələcək Confirmed appointment-lər yeni saatlara sığırmı?
+            var now = DateTime.UtcNow;
+            var futureConfirmed = await db.Appointments
+                .Where(a => a.ProviderId == provider.Id
+                            && a.Status == AppointmentStatus.Confirmed
+                            && a.StartDateTime > now)
+                .ToListAsync();
+
+            foreach (var appt in futureConfirmed)
+            {
+                var day = appt.StartDateTime.DayOfWeek;
+                var matchingHour = dtos.FirstOrDefault(d => d.Day == day);
+
+                if (matchingHour is null)
+                    throw new BadRequestException(
+                        $"Cannot update working hours: you have a confirmed appointment on " +
+                        $"{appt.StartDateTime:dd MMM yyyy HH:mm} ({day}), but {day} is not in the new schedule. " +
+                        $"Cancel or reschedule it first.");
+
+                var apptStart = TimeOnly.FromDateTime(appt.StartDateTime);
+                var apptEnd = TimeOnly.FromDateTime(appt.EndDateTime);
+
+                if (apptStart < matchingHour.StartTime || apptEnd > matchingHour.EndTime)
+                    throw new BadRequestException(
+                        $"Cannot update working hours: a confirmed appointment on " +
+                        $"{appt.StartDateTime:dd MMM yyyy HH:mm} falls outside the new {day} hours. " +
+                        $"Cancel or reschedule it first.");
             }
 
             var existing = db.WorkingHours.Where(w => w.ProviderId == provider.Id);

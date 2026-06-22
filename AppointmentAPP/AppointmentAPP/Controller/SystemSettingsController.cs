@@ -1,6 +1,6 @@
 ﻿using AppointmentAPP.Dtos.SystemSetting;
 using AppointmentAPP.Helpers;
-using AppointmentAPP.Services.Interfaces;
+using AppointmentAPP.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

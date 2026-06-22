@@ -1,6 +1,6 @@
 ﻿using AppointmentAPP.Dtos.PostDtos;
 
-namespace AppointmentAPP.Services.Interfaces
+namespace AppointmentAPP.Interfaces
 {
     public interface IFollowService
     {

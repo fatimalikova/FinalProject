@@ -1,4 +1,4 @@
-﻿using AppointmentAPP.Services.Interfaces;
+﻿using AppointmentAPP.Interfaces;
 
 namespace AppointmentAPP.Services
 {

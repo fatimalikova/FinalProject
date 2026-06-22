@@ -1,6 +1,6 @@
 ﻿using AppointmentAPP.Dtos.Availability;
 
-namespace AppointmentAPP.Services.Interfaces
+namespace AppointmentAPP.Interfaces
 {
     public interface IAvailabilityService
     {

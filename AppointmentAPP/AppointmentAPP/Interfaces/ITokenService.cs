@@ -1,6 +1,6 @@
 ﻿using AppointmentAPP.Models;
 
-namespace AppointmentAPP.Services.Interfaces
+namespace AppointmentAPP.Interfaces
 {
     public interface ITokenService
     {

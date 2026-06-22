@@ -1,9 +1,9 @@
 ﻿using AppointmentAPP.Data;
 using AppointmentAPP.Helpers;
+using AppointmentAPP.Interfaces;
 using AppointmentAPP.Models;
 using AppointmentAPP.Profiles;
 using AppointmentAPP.Services;
-using AppointmentAPP.Services.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -123,7 +123,7 @@ namespace AppointmentAPP
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IFollowService, FollowService>();
             services.AddScoped<IMessageService, MessageService>();
-
+            services.AddScoped<IUnavailableDayService, UnavailableDayService>();
             services.AddSignalR();
 
             services.AddFluentValidationAutoValidation();

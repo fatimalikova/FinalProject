@@ -1,6 +1,6 @@
 ﻿using AppointmentAPP.Extensions;
 using AppointmentAPP.Helpers;
-using AppointmentAPP.Services.Interfaces;
+using AppointmentAPP.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
