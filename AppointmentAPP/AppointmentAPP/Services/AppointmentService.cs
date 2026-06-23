@@ -328,7 +328,8 @@ namespace AppointmentAPP.Services
             StartDateTime = a.StartDateTime,
             EndDateTime = a.EndDateTime,
             Status = a.Status.ToString(),
-            Notes = a.Notes
+            Notes = a.Notes,
+            Price = a.PriceAtBooking
         };
 
 
