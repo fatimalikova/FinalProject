@@ -17,7 +17,13 @@ namespace AppointmentAPP.Data.Configurations
                 .HasForeignKey(r => r.ClientId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasOne(r => r.Appointment)
+            .WithMany()
+            .HasForeignKey(r => r.AppointmentId)
+            .OnDelete(DeleteBehavior.Restrict);
+
             builder.ToTable(t => t.HasCheckConstraint("CK_Review_Rating", "[Rating] BETWEEN 1 AND 5"));
+
         
         }
     }

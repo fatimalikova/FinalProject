@@ -100,5 +100,13 @@ namespace AppointmentAPP.Controller
             var result = await appointmentService.GetMyClientProfileAsync(User.GetUserId());
             return Ok(ResponseModelHelper.SuccessResult(result));
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("admin/all")]
+        public async Task<IActionResult> GetAllForAdmin([FromQuery] string? status, [FromQuery] DateTime? from, [FromQuery] DateTime? to)
+        {
+            var result = await appointmentService.GetAllForAdminAsync(status, from, to);
+            return Ok(ResponseModelHelper.SuccessResult(result));
+        }
     }
 }

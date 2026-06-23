@@ -18,7 +18,7 @@ namespace AppointmentAPP.Services
         UserManager<AppUser> userManager
     ) : IAppointmentService
     {
-        public async Task<AppointmentResponseDto> BookAsync(Guid clientId, BookAppointmentDto dto)
+        public async Task<ResponseAppointmentDto> BookAsync(Guid clientId, BookAppointmentDto dto)
         {
             var service = await db.Services
                 .Include(s => s.Provider).ThenInclude(p => p.User)
@@ -51,7 +51,8 @@ namespace AppointmentAPP.Services
                 StartDateTime = dto.StartDateTime,
                 EndDateTime = endDateTime,
                 Status = AppointmentStatus.Confirmed,
-                Notes = dto.Notes
+                Notes = dto.Notes,
+                PriceAtBooking = service.Price
             };
 
             db.Appointments.Add(appointment);
@@ -111,7 +112,7 @@ namespace AppointmentAPP.Services
 
 
 
-        public async Task<AppointmentResponseDto> CancelAsync(Guid userId, Guid appointmentId, CancelAppointmentDto dto)
+        public async Task<ResponseAppointmentDto> CancelAsync(Guid userId, Guid appointmentId, CancelAppointmentDto dto)
         {
             var appointment = await GetAppointmentWithIncludesAsync(appointmentId);
 
@@ -120,7 +121,7 @@ namespace AppointmentAPP.Services
             if (appointment.Status is AppointmentStatus.Cancelled or AppointmentStatus.Completed)
                 throw new BadRequestException("This appointment cannot be cancelled.");
 
-            await EnsureNoticeRespectedAsync(appointment);
+            await EnsureNoticeRespectedAsync(appointment, userId);
 
             appointment.Status = AppointmentStatus.Cancelled;
             appointment.CancelReason = dto.Reason;
@@ -137,7 +138,7 @@ namespace AppointmentAPP.Services
             return MapToDtoFromEntity(appointment);
         }
 
-        public async Task<AppointmentResponseDto> RescheduleAsync(Guid userId, Guid appointmentId, RescheduleAppointmentDto dto)
+        public async Task<ResponseAppointmentDto> RescheduleAsync(Guid userId, Guid appointmentId, RescheduleAppointmentDto dto)
         {
             var appointment = await GetAppointmentWithIncludesAsync(appointmentId);
 
@@ -146,7 +147,7 @@ namespace AppointmentAPP.Services
             if (appointment.Status is AppointmentStatus.Cancelled or AppointmentStatus.Completed)
                 throw new BadRequestException("This appointment cannot be rescheduled.");
 
-            await EnsureNoticeRespectedAsync(appointment);
+            await EnsureNoticeRespectedAsync(appointment, userId);
 
             var newEnd = dto.NewStartDateTime.AddMinutes(appointment.Service.DurationMinutes);
 
@@ -177,7 +178,7 @@ namespace AppointmentAPP.Services
             return MapToDtoFromEntity(appointment);
         }
 
-        public async Task<AppointmentResponseDto> CompleteAsync(Guid providerUserId, Guid appointmentId)
+        public async Task<ResponseAppointmentDto> CompleteAsync(Guid providerUserId, Guid appointmentId)
         {
             var appointment = await GetAppointmentWithIncludesAsync(appointmentId);
 
@@ -195,7 +196,7 @@ namespace AppointmentAPP.Services
         }
 
         // F7 — Client history (upcoming / past / all)
-        public async Task<List<AppointmentResponseDto>> GetMyAppointmentsAsync(Guid clientUserId, string? filter)
+        public async Task<List<ResponseAppointmentDto>> GetMyAppointmentsAsync(Guid clientUserId, string? filter)
         {
             var query = db.Appointments
                 .Include(a => a.Client)
@@ -216,7 +217,7 @@ namespace AppointmentAPP.Services
         }
 
         // F5 — Provider calendar (daily/weekly — from/to ilə idarə olunur)
-        public async Task<List<AppointmentResponseDto>> GetProviderCalendarAsync(Guid providerUserId, DateTime from, DateTime to)
+        public async Task<List<ResponseAppointmentDto>> GetProviderCalendarAsync(Guid providerUserId, DateTime from, DateTime to)
         {
             var provider = await db.Providers.FirstOrDefaultAsync(p => p.UserId == providerUserId)
                 ?? throw new NotFoundException("Provider profile not found.");
@@ -253,7 +254,7 @@ namespace AppointmentAPP.Services
                 await db.SaveChangesAsync();
         }
         //həm client, həm provider öz randevusunun detalına (status, vaxt, qeydlər) baxa bilsin.
-        public async Task<AppointmentResponseDto> GetByIdAsync(Guid userId, Guid appointmentId)
+        public async Task<ResponseAppointmentDto> GetByIdAsync(Guid userId, Guid appointmentId)
         {
             var appointment = await GetAppointmentWithIncludesAsync(appointmentId);
 
@@ -295,8 +296,10 @@ namespace AppointmentAPP.Services
                 throw new ForbiddenException("You are not authorized to modify this appointment.");
         }
 
-        private async Task EnsureNoticeRespectedAsync(Appointment appointment)
+        private async Task EnsureNoticeRespectedAsync(Appointment appointment , Guid actingUserId)
         {
+            if (actingUserId != appointment.ClientId)
+                return;
             var setting = await db.SystemSettings.FirstOrDefaultAsync();
             var minNoticeHours = setting?.MinCancellationNoticeHours ?? 24;
 
@@ -307,13 +310,13 @@ namespace AppointmentAPP.Services
                     $"This action requires at least {minNoticeHours} hours notice before the appointment.");
         }
 
-        private async Task<AppointmentResponseDto> MapToDto(Guid appointmentId)
+        private async Task<ResponseAppointmentDto> MapToDto(Guid appointmentId)
         {
             var appointment = await GetAppointmentWithIncludesAsync(appointmentId);
             return MapToDtoFromEntity(appointment);
         }
 
-        private static AppointmentResponseDto MapToDtoFromEntity(Appointment a) => new()
+        private static ResponseAppointmentDto MapToDtoFromEntity(Appointment a) => new()
         {
             Id = a.Id,
             ClientId = a.ClientId,
@@ -329,7 +332,7 @@ namespace AppointmentAPP.Services
         };
 
 
-        public async Task<ClientProfileResponseDto> GetMyClientProfileAsync(Guid userId)
+        public async Task<ResponseClientProfileDto> GetMyClientProfileAsync(Guid userId)
         {
             var user = await db.Users.FirstAsync(u => u.Id == userId);
             var now = DateTime.UtcNow;
@@ -342,17 +345,38 @@ namespace AppointmentAPP.Services
 
             var reviewsCount = await db.Reviews.CountAsync(r => r.ClientId == userId);
 
-            return new ClientProfileResponseDto
+            return new ResponseClientProfileDto
             {
                 UserId = user.Id,
                 FullName = user.FullName,
                 Email = user.Email!,
-                UserName = user.UserName!,
                 CreatedAt = user.CreatedAt,
                 UpcomingAppointmentsCount = upcoming,
                 PastAppointmentsCount = past,
                 ReviewsWrittenCount = reviewsCount
             };
+        }
+
+
+        public async Task<List<ResponseAppointmentDto>> GetAllForAdminAsync(string? status, DateTime? from, DateTime? to)
+        {
+            var query = db.Appointments
+                .Include(a => a.Client)
+                .Include(a => a.Provider)
+                .Include(a => a.Service)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(status) && Enum.TryParse<AppointmentStatus>(status, true, out var parsedStatus))
+                query = query.Where(a => a.Status == parsedStatus);
+
+            if (from.HasValue)
+                query = query.Where(a => a.StartDateTime.Date >= from.Value.Date);
+
+            if (to.HasValue)
+                query = query.Where(a => a.StartDateTime.Date <= to.Value.Date);
+
+            var appointments = await query.OrderByDescending(a => a.StartDateTime).ToListAsync();
+            return appointments.Select(MapToDtoFromEntity).ToList();
         }
     }
 }

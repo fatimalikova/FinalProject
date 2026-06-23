@@ -66,7 +66,23 @@ namespace AppointmentAPP.Services
                     {
                         // email fail olsa belə, reminder prosesi davam etməlidir
                     }
-
+                    // ===== Client-ə reminder email (yeni) =====
+                    try
+                    {
+                        await emailService.SendEmailAsync(
+                            appointment.Client.Email!,
+                            "Appointment Reminder",
+                            $"<h3>Xatırlatma</h3>" +
+                            $"<p>Hörmətli <b>{appointment.Client.FullName}</b>,</p>" +
+                            $"<p><b>{appointment.Service.Name}</b> randevunuz yaxınlaşır.</p>" +
+                            $"<p>Provider: {appointment.Provider.BusinessName}</p>" +
+                            $"<p>Vaxt: <b>{appointment.StartDateTime:dd MMM yyyy HH:mm}</b></p>" +
+                            $"<p>Ünvan: {appointment.Provider.Address}</p>");
+                    }
+                    catch
+                    {
+                        // email fail olsa belə reminder prosesi davam etməlidir
+                    }
                     appointment.ReminderSent = true;
                 }
 

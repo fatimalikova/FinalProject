@@ -50,7 +50,7 @@ namespace AppointmentAPP.Profiles
             CreateMap<CreateUnavailableDayDto, UnavailableDay>();
 
             // ===== Appointment =====
-            CreateMap<Appointment, AppointmentResponseDto>()
+            CreateMap<Appointment, ResponseAppointmentDto>()
                 .ForMember(d => d.Status, opt => opt.MapFrom(s => s.Status.ToString()))
                 .ForMember(d => d.ClientFullName, opt => opt.MapFrom(s => s.Client.FullName))
                 .ForMember(d => d.ProviderBusinessName, opt => opt.MapFrom(s => s.Provider.BusinessName))

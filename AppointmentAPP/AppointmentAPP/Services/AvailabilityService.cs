@@ -13,19 +13,23 @@ namespace AppointmentAPP.Services
             var date = request.Date.Date;
             var dayOfWeek = date.DayOfWeek;
 
+            var setting = await db.SystemSettings.FirstOrDefaultAsync();
+
+            //  MaxAdvanceBookingDays — əvvəllər yoxlanmırdı, indi əlavə olundu
+            var maxAdvanceDays = setting?.MaxAdvanceBookingDays ?? 30;
+            if (date > DateTime.UtcNow.Date.AddDays(maxAdvanceDays))
+                return new List<AvailableSlotDto>();
+
             var service = await db.Services
                 .FirstOrDefaultAsync(s => s.Id == request.ServiceId && s.ProviderId == request.ProviderId && s.IsActive);
-
             if (service is null) return new List<AvailableSlotDto>();
 
             var isUnavailable = await db.UnavailableDays
                 .AnyAsync(u => u.ProviderId == request.ProviderId && u.Date.Date == date);
-
             if (isUnavailable) return new List<AvailableSlotDto>();
 
             var workingHour = await db.WorkingHours
                 .FirstOrDefaultAsync(w => w.ProviderId == request.ProviderId && w.Day == dayOfWeek);
-
             if (workingHour is null) return new List<AvailableSlotDto>();
 
             var existingAppointments = await db.Appointments
@@ -37,6 +41,10 @@ namespace AppointmentAPP.Services
 
             var slots = new List<AvailableSlotDto>();
             var duration = TimeSpan.FromMinutes(service.DurationMinutes);
+
+            // step indi DefaultSlotIntervalMinutes-dən gəlir, duration-dan deyil
+            var stepMinutes = setting?.DefaultSlotIntervalMinutes ?? 15;
+            var step = TimeSpan.FromMinutes(stepMinutes);
 
             var slotStart = date.Add(workingHour.StartTime.ToTimeSpan());
             var workEnd = date.Add(workingHour.EndTime.ToTimeSpan());
@@ -57,7 +65,7 @@ namespace AppointmentAPP.Services
                     });
                 }
 
-                slotStart = slotStart.Add(duration);
+                slotStart = slotStart.Add(step); // əvvəllər: .Add(duration)
             }
 
             return slots;
