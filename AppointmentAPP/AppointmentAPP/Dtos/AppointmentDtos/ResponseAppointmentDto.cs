@@ -1,6 +1,6 @@
 ﻿namespace AppointmentAPP.Dtos.AppointmentDtos
 {
-    public class AppointmentResponseDto
+    public class ResponseAppointmentDto
     {
         public Guid Id { get; set; }
         public Guid ClientId { get; set; }
@@ -13,5 +13,6 @@
         public DateTime EndDateTime { get; set; }
         public string Status { get; set; }
         public string? Notes { get; set; }
+        public decimal Price { get; set; }
     }
 }

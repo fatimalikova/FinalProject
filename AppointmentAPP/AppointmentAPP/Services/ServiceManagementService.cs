@@ -38,6 +38,9 @@ namespace AppointmentAPP.Services
                 .FirstOrDefaultAsync(s => s.Id == serviceId && s.ProviderId == provider.Id)
                 ?? throw new NotFoundException("Service not found.");
 
+            if (service.DeactivatedByAdmin && dto.IsActive)
+                throw new BadRequestException("This service was deactivated by an administrator and cannot be reactivated. Contact support.");
+
             service.Name = dto.Name;
             service.Description = dto.Description;
             service.Price = dto.Price;
@@ -132,6 +135,18 @@ namespace AppointmentAPP.Services
                 ?? throw new NotFoundException("Service not found.");
 
             service.IsActive = false;
+            service.DeactivatedByAdmin = true;
+            service.UpdatedAt = DateTime.UtcNow;
+            await db.SaveChangesAsync();
+        }
+
+        public async Task ReactivateByAdminAsync(Guid serviceId)
+        {
+            var service = await db.Services.FirstOrDefaultAsync(s => s.Id == serviceId)
+                ?? throw new NotFoundException("Service not found.");
+
+            service.IsActive = true;
+            service.DeactivatedByAdmin = false;
             service.UpdatedAt = DateTime.UtcNow;
             await db.SaveChangesAsync();
         }

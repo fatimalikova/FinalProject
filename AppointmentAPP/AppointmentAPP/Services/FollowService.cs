@@ -1,5 +1,6 @@
 ﻿using AppointmentAPP.Data;
 using AppointmentAPP.Dtos.PostDtos;
+using AppointmentAPP.Enums;
 using AppointmentAPP.Exceptions;
 using AppointmentAPP.Interfaces;
 using AppointmentAPP.Models;
@@ -7,18 +8,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AppointmentAPP.Services
 {
-    public class FollowService(AppDbContext db) : IFollowService
+    public class FollowService(AppDbContext db, INotificationService notificationService) : IFollowService
     {
         public async Task FollowAsync(Guid userId, Guid providerId)
         {
-            var providerExists = await db.Providers.AnyAsync(p => p.Id == providerId);
-            if (!providerExists) throw new NotFoundException("Provider not found.");
+            var provider = await db.Providers.FirstOrDefaultAsync(p => p.Id == providerId)
+                ?? throw new NotFoundException("Provider not found.");
 
             var alreadyFollowing = await db.Follows.AnyAsync(f => f.FollowerId == userId && f.ProviderId == providerId);
             if (alreadyFollowing) throw new BadRequestException("You are already following this provider.");
 
             db.Follows.Add(new Follow { FollowerId = userId, ProviderId = providerId });
             await db.SaveChangesAsync();
+
+            var follower = await db.Users.FirstAsync(u => u.Id == userId);
+
+            await notificationService.CreateAsync(
+                provider.UserId, "New Follower",
+                $"{follower.FullName} started following you.",
+                NotificationType.System);
         }
 
         public async Task UnfollowAsync(Guid userId, Guid providerId)

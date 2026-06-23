@@ -16,6 +16,9 @@ namespace AppointmentAPP.Data.Configurations
             builder.Property(a => a.Notes).HasMaxLength(500);
             builder.Property(a => a.CancelReason).HasMaxLength(300);
 
+            builder.Property(a => a.PriceAtBooking)
+                    .HasColumnType("decimal(10,2)");
+
             // AppUser (Client) silinəndə onun appointment-ləri də silinsin
             builder.HasOne(a => a.Client)
                 .WithMany(u => u.Appointments)

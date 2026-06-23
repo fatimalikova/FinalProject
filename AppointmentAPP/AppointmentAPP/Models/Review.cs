@@ -12,5 +12,8 @@ namespace AppointmentAPP.Models
 
         public Guid ProviderId { get; set; }
         public Provider Provider { get; set; }
+
+        public Guid AppointmentId { get; set; }
+        public Appointment Appointment { get; set; }
     }
 }

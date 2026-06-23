@@ -12,6 +12,7 @@ namespace AppointmentAPP.Models
 
         public Guid ProviderId { get; set; }
         public Provider Provider { get; set; }
+        public bool DeactivatedByAdmin { get; set; } = false;
 
         public List<Appointment> Appointments { get; set; } = new();
     }

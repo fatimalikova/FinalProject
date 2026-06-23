@@ -82,6 +82,13 @@ namespace AppointmentAPP.Controller
             return Ok(ResponseModelHelper.SuccessResult("Service deactivated by admin."));
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpPut("{id:guid}/admin-reactivate")]
+        public async Task<IActionResult> ReactivateByAdmin(Guid id)
+        {
+            await serviceManagementService.ReactivateByAdminAsync(id);
+            return Ok(ResponseModelHelper.SuccessResult("Service reactivated by admin."));
+        }
 
 
         [AllowAnonymous]

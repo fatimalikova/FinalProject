@@ -13,5 +13,6 @@ namespace AppointmentAPP.Interfaces
         Task DeactivateByAdminAsync(Guid serviceId);
         Task<List<ServiceCatalogItemDto>> GetCatalogAsync();
         Task<List<ServiceSearchResultDto>> SearchByNameAsync(string name);
+        Task ReactivateByAdminAsync(Guid serviceId);
     }
 }

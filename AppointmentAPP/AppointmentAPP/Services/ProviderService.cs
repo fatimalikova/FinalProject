@@ -162,22 +162,22 @@ namespace AppointmentAPP.Services
             var totalServices = await db.Services.CountAsync(s => s.ProviderId == provider.Id && s.IsActive);
 
             var todayCount = await db.Appointments.CountAsync(a =>
-                a.ProviderId == provider.Id &&
-                a.StartDateTime.Date == today &&
-                a.Status != AppointmentStatus.Cancelled);
+                a.ProviderId == provider.Id && a.StartDateTime.Date == today && a.Status != AppointmentStatus.Cancelled);
 
             var weekCount = await db.Appointments.CountAsync(a =>
                 a.ProviderId == provider.Id &&
-                a.StartDateTime.Date >= today &&
-                a.StartDateTime.Date <= today.AddDays(7) &&
+                a.StartDateTime.Date >= today && a.StartDateTime.Date <= today.AddDays(7) &&
                 a.Status != AppointmentStatus.Cancelled);
+
+            var followersCount = await db.Follows.CountAsync(f => f.ProviderId == provider.Id);
 
             return new ProviderDashboardDto
             {
                 Profile = profile,
                 TotalServices = totalServices,
                 TodayAppointmentsCount = todayCount,
-                UpcomingWeekAppointmentsCount = weekCount
+                UpcomingWeekAppointmentsCount = weekCount,
+                TotalFollowers = followersCount
             };
         }
     }

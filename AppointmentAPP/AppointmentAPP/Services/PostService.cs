@@ -1,5 +1,6 @@
 ﻿using AppointmentAPP.Data;
 using AppointmentAPP.Dtos.PostDtos;
+using AppointmentAPP.Enums;
 using AppointmentAPP.Exceptions;
 using AppointmentAPP.Interfaces;
 using AppointmentAPP.Models;
@@ -7,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AppointmentAPP.Services
 {
-    public class PostService(AppDbContext db) : IPostService
+    public class PostService(AppDbContext db, INotificationService notificationService) : IPostService
     {
         public async Task<ResponsePostDto> CreateAsync(Guid userId, CreatePostDto dto)
         {
@@ -83,20 +84,25 @@ namespace AppointmentAPP.Services
 
         public async Task<ResponseCommentDto> AddCommentAsync(Guid userId, Guid postId, CreateCommentDto dto)
         {
-            var postExists = await db.ProviderPosts.AnyAsync(p => p.Id == postId);
-            if (!postExists) throw new NotFoundException("Post not found.");
+            var post = await db.ProviderPosts
+                .Include(p => p.Provider)
+                .FirstOrDefaultAsync(p => p.Id == postId)
+                ?? throw new NotFoundException("Post not found.");
 
-            var comment = new PostComment
-            {
-                PostId = postId,
-                UserId = userId,
-                Content = dto.Content
-            };
-
+            var comment = new PostComment { PostId = postId, UserId = userId, Content = dto.Content };
             db.PostComments.Add(comment);
             await db.SaveChangesAsync();
 
             var user = await db.Users.FirstAsync(u => u.Id == userId);
+
+            // özünə bildiriş getməsin (provider öz postuna comment yazsa)
+            if (post.Provider.UserId != userId)
+            {
+                await notificationService.CreateAsync(
+                    post.Provider.UserId, "New Comment",
+                    $"{user.FullName} commented on your post.",
+                    NotificationType.System);
+            }
 
             return new ResponseCommentDto
             {
@@ -107,6 +113,7 @@ namespace AppointmentAPP.Services
                 CreatedAt = comment.CreatedAt
             };
         }
+
 
         public async Task<List<ResponseCommentDto>> GetCommentsAsync(Guid postId)
         {
