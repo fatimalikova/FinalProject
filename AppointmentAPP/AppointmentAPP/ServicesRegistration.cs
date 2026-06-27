@@ -21,6 +21,14 @@ namespace AppointmentAPP
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddControllers();
+            //Front qosmaq ucun CORS policy
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFrontend", policy =>
+                    policy.WithOrigins("http://localhost:5173")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod());
+            });
             services.AddValidatorsFromAssemblyContaining<Program>();
 
             // using custom response model for exception handling and validation errors
