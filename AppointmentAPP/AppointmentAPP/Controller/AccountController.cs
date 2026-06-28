@@ -46,7 +46,7 @@ namespace AppointmentAPP.Controller
 
         [HttpPost("register/client")]
         public Task<IActionResult> RegisterClient([FromBody] RegisterDto registerDto)
-    => RegisterInternal(registerDto, "Client");
+            => RegisterInternal(registerDto, "Client");
 
         [HttpPost("register/provider")]
         public Task<IActionResult> RegisterProvider([FromBody] RegisterDto registerDto)
@@ -123,7 +123,7 @@ namespace AppointmentAPP.Controller
             if (!user.EmailConfirmed)
                 return BadRequest(ResponseModelHelper.BadRequestResult<object>("Email is not confirmed."));
 
-            // 🔑 Əsas məhdudiyyət — bu hesab bu giriş qapısından girə bilər mi?
+           
             var roles = await userManager.GetRolesAsync(user);
             if (!roles.Contains(requiredRole))
                 return BadRequest(ResponseModelHelper.BadRequestResult<object>(
