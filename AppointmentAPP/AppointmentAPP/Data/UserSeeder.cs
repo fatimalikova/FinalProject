@@ -9,8 +9,9 @@ namespace AppointmentAPP.Data
         {
             var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
 
-            const string adminEmail = "admin@appointmentapp.com";
+            const string adminEmail = "fmelikova49@gmail.com"; 
             const string adminPassword = "Admin@123";
+            const string adminUserName = "_admin";
 
             var existingAdmin = await userManager.FindByEmailAsync(adminEmail);
             if (existingAdmin is not null)
@@ -20,7 +21,7 @@ namespace AppointmentAPP.Data
             {
                 FullName = "System Admin",
                 Email = adminEmail,
-                UserName = adminEmail,
+                UserName = adminUserName,
                 EmailConfirmed = true
             };
 

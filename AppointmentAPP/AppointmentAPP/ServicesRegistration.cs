@@ -22,12 +22,24 @@ namespace AppointmentAPP
         {
             services.AddControllers();
             //Front qosmaq ucun CORS policy
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy("AllowFrontend", policy =>
+            //        policy.WithOrigins("http://localhost:5173")
+            //              .AllowAnyHeader()
+            //              .AllowAnyMethod());
+            //});
+
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowFrontend", policy =>
-                    policy.WithOrigins("http://localhost:5173")
-                          .AllowAnyHeader()
-                          .AllowAnyMethod());
+                    policy.WithOrigins(
+                        "http://localhost:5173",
+                        "http://127.0.0.1:5500",    
+                        "http://localhost:5500"      
+                    )
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
             });
             services.AddValidatorsFromAssemblyContaining<Program>();
 
