@@ -136,6 +136,7 @@ namespace AppointmentAPP.Services
             return new ResponseProviderDto
             {
                 Id = provider.Id,
+                ImageUrl = provider.ImageUrl,
                 BusinessName = provider.BusinessName,
                 Category = provider.Category,
                 Description = provider.Description,

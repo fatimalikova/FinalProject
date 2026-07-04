@@ -6,6 +6,7 @@ namespace AppointmentAPP.Models
     public class Provider : BaseEntity
     {
         public string BusinessName { get; set; }
+        public string? ImageUrl { get; set; }
         public string Description { get; set; }
         public string Category { get; set; }          
         public ProviderStatus Status { get; set; } = ProviderStatus.Pending;

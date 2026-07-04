@@ -7,6 +7,7 @@ namespace AppointmentAPP.Dtos.ProviderDtos
     public class ResponseProviderDto
     {
         public Guid Id { get; set; }
+        public string? ImageUrl { get; set; }
         public string BusinessName { get; set; }
         public string Category { get; set; }
         public string Description { get; set; }
