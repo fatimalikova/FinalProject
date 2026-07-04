@@ -97,5 +97,13 @@ namespace AppointmentAPP.Controller
             await postService.DeleteCommentAsync(User.GetUserId(), commentId);
             return Ok(ResponseModelHelper.SuccessResult("Comment deleted."));
         }
+
+        [Authorize]
+        [HttpPut("comments/{commentId:guid}")]
+        public async Task<IActionResult> UpdateComment(Guid commentId, [FromBody] UpdateCommentDto dto)
+        {
+            var result = await postService.UpdateCommentAsync(User.GetUserId(), commentId, dto.Content);
+            return Ok(ResponseModelHelper.SuccessResult(result));
+        }
     }
 }

@@ -133,17 +133,49 @@ namespace AppointmentAPP.Services
             }).ToList();
         }
 
-        public async Task DeleteCommentAsync(Guid userId, Guid commentId)
+        public async Task DeleteCommentAsync(Guid requestingUserId, Guid commentId, bool isPostOwner = false)
         {
-            var comment = await db.PostComments.FirstOrDefaultAsync(c => c.Id == commentId)
+            var comment = await db.PostComments
+                .Include(c => c.Post)
+                .ThenInclude(p => p.Provider)
+                .FirstOrDefaultAsync(c => c.Id == commentId)
                 ?? throw new NotFoundException("Comment not found.");
 
-            // Yalnız öz comment-ini silə bilər
-            if (comment.UserId != userId)
-                throw new ForbiddenException("You can only delete your own comment.");
+            bool isCommentOwner = comment.UserId == requestingUserId;
+            bool isOwnerOfPost = comment.Post.Provider.UserId == requestingUserId;
+
+            if (!isCommentOwner && !isOwnerOfPost)
+                throw new ForbiddenException("You can only delete your own comments or comments on your posts.");
 
             db.PostComments.Remove(comment);
             await db.SaveChangesAsync();
+        }
+
+        public async Task<ResponseCommentDto> UpdateCommentAsync(Guid userId, Guid commentId, string content)
+        {
+            var comment = await db.PostComments
+                .Include(c => c.Post)
+                .ThenInclude(p => p.Provider)
+                .FirstOrDefaultAsync(c => c.Id == commentId)
+                ?? throw new NotFoundException("Comment not found.");
+
+            bool isCommentOwner = comment.UserId == userId;
+            bool isPostOwner = comment.Post.Provider.UserId == userId;
+
+            if (!isCommentOwner && !isPostOwner)
+                throw new ForbiddenException("You cannot edit this comment.");
+
+            comment.Content = content;
+            await db.SaveChangesAsync();
+
+            return new ResponseCommentDto
+            {
+                Id = comment.Id,
+                Content = comment.Content,
+                UserId = comment.UserId,
+                UserFullName = (await db.Users.FirstAsync(u => u.Id == comment.UserId)).FullName,
+                CreatedAt = comment.CreatedAt,
+            };
         }
 
         private static ResponsePostDto MapToDto(ProviderPost p, string providerName, Guid? currentUserId, int likesCount, int commentsCount, bool isLiked) => new()

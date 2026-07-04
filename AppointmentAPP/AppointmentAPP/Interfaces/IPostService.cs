@@ -13,6 +13,7 @@ namespace AppointmentAPP.Interfaces
 
         Task<ResponseCommentDto> AddCommentAsync(Guid userId, Guid postId, CreateCommentDto dto);
         Task<List<ResponseCommentDto>> GetCommentsAsync(Guid postId);
-        Task DeleteCommentAsync(Guid userId, Guid commentId);
+        Task DeleteCommentAsync(Guid requestingUserId, Guid commentId, bool isPostOwner = false);
+        Task<ResponseCommentDto> UpdateCommentAsync(Guid userId, Guid commentId, string content);
     }
 }
