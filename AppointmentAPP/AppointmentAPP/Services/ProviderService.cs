@@ -72,7 +72,7 @@ namespace AppointmentAPP.Services
             return result;
         }
 
-        // 🔑 Admin üçün — status-a baxmadan (Pending daxil) hamısını görür
+        
         public async Task<List<ResponseProviderDto>> GetAllForAdminAsync(string? status, int page, int pageSize)
         {
             var query = db.Providers.AsQueryable();
@@ -98,6 +98,7 @@ namespace AppointmentAPP.Services
                 ?? throw new NotFoundException("Provider profile not found.");
 
             provider.BusinessName = dto.BusinessName;
+            provider.ImageUrl = dto.ImageUrl;
             provider.Category = dto.Category;
             provider.Description = dto.Description;
             provider.UpdatedAt = DateTime.UtcNow;

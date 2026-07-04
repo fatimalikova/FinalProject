@@ -16,9 +16,9 @@ namespace AppointmentAPP.Controller
     {
         [Authorize(Roles = "Provider")]
         [HttpPut]
-        public async Task<IActionResult> Set([FromBody] List<CreateWorkingHourDto> dtos)
+        public async Task<IActionResult> Set([FromBody] SetWorkingHoursDto request)
         {
-            foreach (var dto in dtos)
+            foreach (var dto in request.Dtos)
             {
                 var validation = validator.Validate(dto);
                 if (!validation.IsValid)
@@ -26,7 +26,7 @@ namespace AppointmentAPP.Controller
                         validation.Errors.Select(e => e.ErrorMessage).ToArray()));
             }
 
-            var result = await workingHourService.SetWorkingHoursAsync(User.GetUserId(), dtos);
+            var result = await workingHourService.SetWorkingHoursAsync(User.GetUserId(), request.Dtos);
             return Ok(ResponseModelHelper.SuccessResult(result));
         }
 

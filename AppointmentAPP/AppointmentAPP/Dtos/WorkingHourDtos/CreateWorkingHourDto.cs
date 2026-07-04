@@ -9,7 +9,10 @@ namespace AppointmentAPP.Dtos.WorkingHourDtos
         public TimeOnly StartTime { get; set; }
         public TimeOnly EndTime { get; set; }
     }
-
+    public class SetWorkingHoursDto
+    {
+        public List<CreateWorkingHourDto> Dtos { get; set; } = new();
+    }
     public class CreateWorkingHourValidator : AbstractValidator<CreateWorkingHourDto>
     {
         public CreateWorkingHourValidator()

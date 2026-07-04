@@ -20,16 +20,14 @@ namespace AppointmentAPP
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddControllers();
-            //Front qosmaq ucun CORS policy
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy("AllowFrontend", policy =>
-            //        policy.WithOrigins("http://localhost:5173")
-            //              .AllowAnyHeader()
-            //              .AllowAnyMethod());
-            //});
+            services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new TimeOnlyJsonConverter());
+            });
 
+
+            //Front qosmaq ucun CORS policy
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowFrontend", policy =>
@@ -110,7 +108,6 @@ namespace AppointmentAPP
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]))
                 };
 
-                // 🔑 SignalR üçün — brauzer WebSocket-də Authorization header set edə bilmir,
                 // token query string vasitəsilə ötürülür, burada oxunur
                 options.Events = new JwtBearerEvents
                 {
