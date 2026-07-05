@@ -7,6 +7,7 @@ namespace AppointmentAPP.Data
 {
     public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
     {
+        public DbSet<Slider> Sliders { get; set; }
         public DbSet<Conversation> Conversations { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<ProviderPost> ProviderPosts { get; set; }
