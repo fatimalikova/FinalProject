@@ -49,5 +49,19 @@ namespace AppointmentAPP.Services
             ReminderHoursBeforeAppointment = s.ReminderHoursBeforeAppointment,
             RequireProviderApproval = s.RequireProviderApproval
         };
+
+        public async Task ResetAsync()
+        {
+            var settings = await db.SystemSettings.FirstOrDefaultAsync();
+            if (settings != null)
+            {
+                settings.MinCancellationNoticeHours = 0;
+                settings.MaxAdvanceBookingDays = 0;
+                settings.DefaultSlotIntervalMinutes = 0;
+                settings.ReminderHoursBeforeAppointment = 0;
+                settings.RequireProviderApproval = false;
+                await db.SaveChangesAsync();
+            }
+        }
     }
 }

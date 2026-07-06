@@ -50,5 +50,6 @@ namespace AppointmentAPP.Controller
             await sliderService.DeleteAsync(id);
             return Ok(ResponseModelHelper.SuccessResult("Slider deleted."));
         }
+
     }
 }

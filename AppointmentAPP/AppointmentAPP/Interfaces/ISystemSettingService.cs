@@ -6,5 +6,6 @@ namespace AppointmentAPP.Interfaces
     {
         Task<ResponseSystemSettingDto> GetAsync();
         Task<ResponseSystemSettingDto> UpdateAsync(UpdateSystemSettingDto dto);
+        Task ResetAsync();
     }
 }

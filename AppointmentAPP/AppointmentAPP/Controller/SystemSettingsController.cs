@@ -1,6 +1,7 @@
 ﻿using AppointmentAPP.Dtos.SystemSetting;
 using AppointmentAPP.Helpers;
 using AppointmentAPP.Interfaces;
+using AppointmentAPP.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,14 @@ namespace AppointmentAPP.Controller
 
             var result = await systemSettingService.UpdateAsync(dto);
             return Ok(ResponseModelHelper.SuccessResult(result));
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete]
+        public async Task<IActionResult> Reset()
+        {
+            await systemSettingService.ResetAsync();
+            return Ok(ResponseModelHelper.SuccessResult("Settings reset."));
         }
     }
 }
