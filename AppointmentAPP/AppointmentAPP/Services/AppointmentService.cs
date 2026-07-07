@@ -20,12 +20,17 @@ namespace AppointmentAPP.Services
     {
         public async Task<ResponseAppointmentDto> BookAsync(Guid clientId, BookAppointmentDto dto)
         {
+            var provider = await db.Providers
+                .FirstOrDefaultAsync(p => p.Id == dto.ProviderId || p.UserId == dto.ProviderId)
+                ?? throw new NotFoundException("Provider not found.");
+
             var service = await db.Services
-                .Include(s => s.Provider).ThenInclude(p => p.User)
-                .FirstOrDefaultAsync(s => s.Id == dto.ServiceId && s.ProviderId == dto.ProviderId && s.IsActive)
+                .FirstOrDefaultAsync(s => s.Id == dto.ServiceId
+                                        && s.IsActive
+                                        && s.ProviderId == provider.Id)
                 ?? throw new NotFoundException("Service not found for this provider.");
 
-            if (service.Provider.Status != ProviderStatus.Approved || !service.Provider.IsActive)
+            if (provider.Status != ProviderStatus.Approved || !provider.IsActive)
                 throw new BadRequestException("This provider is not currently accepting bookings.");
 
             var endDateTime = dto.StartDateTime.AddMinutes(service.DurationMinutes);
@@ -39,14 +44,15 @@ namespace AppointmentAPP.Services
             if (dto.StartDateTime < DateTime.UtcNow)
                 throw new BadRequestException("Cannot book an appointment in the past.");
 
-            var isAvailable = await availabilityService.IsSlotAvailableAsync(dto.ProviderId, dto.StartDateTime, endDateTime);
+            var isAvailable = await availabilityService.IsSlotAvailableAsync(
+                provider.Id, dto.StartDateTime, endDateTime);
             if (!isAvailable)
                 throw new BadRequestException("This time slot is no longer available.");
 
             var appointment = new Appointment
             {
                 ClientId = clientId,
-                ProviderId = dto.ProviderId,
+                ProviderId = provider.Id,
                 ServiceId = dto.ServiceId,
                 StartDateTime = dto.StartDateTime,
                 EndDateTime = endDateTime,
@@ -59,57 +65,57 @@ namespace AppointmentAPP.Services
             await db.SaveChangesAsync();
 
             var client = await db.Users.FirstAsync(u => u.Id == clientId);
+            var providerUser = await db.Users.FirstAsync(u => u.Id == provider.UserId);
 
-            // ===== 1) In-app notification-lar =====
+            /* In-app notifications */
             await notificationService.CreateAsync(
                 clientId, "Appointment Confirmed",
                 $"Your appointment for {service.Name} on {dto.StartDateTime:dd MMM yyyy HH:mm} is confirmed.",
                 NotificationType.AppointmentConfirmed);
 
             await notificationService.CreateAsync(
-                service.Provider.UserId, "New Appointment Booked",
+                provider.UserId, "New Appointment Booked",
                 $"A new appointment has been booked for {service.Name} on {dto.StartDateTime:dd MMM yyyy HH:mm}.",
                 NotificationType.AppointmentBooked);
 
-            // ===== 2) Provider-ə email =====
+            /* Provider-ə email */
             await TrySendEmailAsync(
-                service.Provider.User.Email!,
+                providerUser.Email!,
                 "New Reservation Received",
                 $"<h3>Yeni rezervasiya</h3>" +
                 $"<p><b>{client.FullName}</b> sizin <b>{service.Name}</b> xidmətiniz üçün rezervasiya etdi.</p>" +
                 $"<p>Tarix: <b>{dto.StartDateTime:dd MMM yyyy HH:mm}</b></p>" +
                 $"<p>Müştəri email: {client.Email}</p>");
 
-            // ===== 3) Admin(lər)ə email =====
+            /* Admin-lərə email */
             var admins = await userManager.GetUsersInRoleAsync("Admin");
             foreach (var admin in admins)
             {
                 await TrySendEmailAsync(
                     admin.Email!,
                     "New Reservation on Platform",
-                    $"<h3>Yeni rezervasiya (məlumat üçün)</h3>" +
+                    $"<h3>Yeni rezervasiya</h3>" +
                     $"<p>Müştəri: <b>{client.FullName}</b></p>" +
-                    $"<p>Provider: <b>{service.Provider.BusinessName}</b></p>" +
+                    $"<p>Provider: <b>{provider.BusinessName}</b></p>" +
                     $"<p>Xidmət: {service.Name}</p>" +
                     $"<p>Tarix: {dto.StartDateTime:dd MMM yyyy HH:mm}</p>");
             }
 
-            // ===== 4) Client-ə təsdiq email-i — SƏNİN SUAL ETDİYİN KOD BURAYA GEDİR =====
+            /* Client-ə email */
             await TrySendEmailAsync(
                 client.Email!,
                 "Reservation Confirmed",
                 $"<h3>Rezervasiyanız təsdiqləndi</h3>" +
                 $"<p>Hörmətli <b>{client.FullName}</b>,</p>" +
-                $"<p><b>{service.Provider.BusinessName}</b> üçün <b>{service.Name}</b> xidmətinə rezervasiyanız təsdiqləndi.</p>" +
+                $"<p><b>{provider.BusinessName}</b> üçün <b>{service.Name}</b> xidmətinə rezervasiyanız təsdiqləndi.</p>" +
                 $"<p>Tarix: <b>{dto.StartDateTime:dd MMM yyyy HH:mm}</b></p>" +
-                $"<p>Ünvan: {service.Provider.Address}</p>" +
-                (service.Provider.Latitude.HasValue
-                    ? $"<p><a href='https://www.google.com/maps?q={service.Provider.Latitude},{service.Provider.Longitude}'>Xəritədə bax</a></p>"
+                $"<p>Ünvan: {provider.Address}</p>" +
+                (provider.Latitude.HasValue
+                    ? $"<p><a href='https://www.google.com/maps?q={provider.Latitude},{provider.Longitude}'>Xəritədə bax</a></p>"
                     : ""));
 
             return await MapToDto(appointment.Id);
         }
-
 
 
         public async Task<ResponseAppointmentDto> CancelAsync(Guid userId, Guid appointmentId, CancelAppointmentDto dto)

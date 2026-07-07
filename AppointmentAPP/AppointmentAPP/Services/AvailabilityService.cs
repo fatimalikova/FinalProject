@@ -10,30 +10,35 @@ namespace AppointmentAPP.Services
     {
         public async Task<List<AvailableSlotDto>> GetAvailableSlotsAsync(AvailabilityRequestDto request)
         {
+            var provider = await db.Providers
+            .FirstOrDefaultAsync(p => p.Id == request.ProviderId || p.UserId == request.ProviderId);
+            if (provider is null) return new List<AvailableSlotDto>();
+
+            var realProviderId = provider.Id;
             var date = request.Date.Date;
             var dayOfWeek = date.DayOfWeek;
 
             var setting = await db.SystemSettings.FirstOrDefaultAsync();
-
-            //  MaxAdvanceBookingDays — əvvəllər yoxlanmırdı, indi əlavə olundu
             var maxAdvanceDays = setting?.MaxAdvanceBookingDays ?? 30;
             if (date > DateTime.UtcNow.Date.AddDays(maxAdvanceDays))
                 return new List<AvailableSlotDto>();
 
             var service = await db.Services
-                .FirstOrDefaultAsync(s => s.Id == request.ServiceId && s.ProviderId == request.ProviderId && s.IsActive);
+                .FirstOrDefaultAsync(s => s.Id == request.ServiceId
+                                        && s.ProviderId == realProviderId
+                                        && s.IsActive);
             if (service is null) return new List<AvailableSlotDto>();
 
             var isUnavailable = await db.UnavailableDays
-                .AnyAsync(u => u.ProviderId == request.ProviderId && u.Date.Date == date);
+                .AnyAsync(u => u.ProviderId == realProviderId && u.Date.Date == date);
             if (isUnavailable) return new List<AvailableSlotDto>();
 
             var workingHour = await db.WorkingHours
-                .FirstOrDefaultAsync(w => w.ProviderId == request.ProviderId && w.Day == dayOfWeek);
+                .FirstOrDefaultAsync(w => w.ProviderId == realProviderId && w.Day == dayOfWeek);
             if (workingHour is null) return new List<AvailableSlotDto>();
 
             var existingAppointments = await db.Appointments
-                .Where(a => a.ProviderId == request.ProviderId
+                .Where(a => a.ProviderId == realProviderId
                             && a.StartDateTime.Date == date
                             && a.Status != AppointmentStatus.Cancelled)
                 .Select(a => new { a.StartDateTime, a.EndDateTime })
@@ -73,12 +78,18 @@ namespace AppointmentAPP.Services
 
         public async Task<bool> IsSlotAvailableAsync(Guid providerId, DateTime startDateTime, DateTime endDateTime, Guid? excludeAppointmentId = null)
         {
+            var provider = await db.Providers
+                .FirstOrDefaultAsync(p => p.Id == providerId || p.UserId == providerId);
+            if (provider is null) return false;
+
+            var realProviderId = provider.Id;
+
             var isUnavailable = await db.UnavailableDays
-                .AnyAsync(u => u.ProviderId == providerId && u.Date.Date == startDateTime.Date);
+                .AnyAsync(u => u.ProviderId == realProviderId && u.Date.Date == startDateTime.Date);
             if (isUnavailable) return false;
 
             var workingHour = await db.WorkingHours
-                .FirstOrDefaultAsync(w => w.ProviderId == providerId && w.Day == startDateTime.DayOfWeek);
+                .FirstOrDefaultAsync(w => w.ProviderId == realProviderId && w.Day == startDateTime.DayOfWeek);
             if (workingHour is null) return false;
 
             var dayStart = startDateTime.Date.Add(workingHour.StartTime.ToTimeSpan());
@@ -86,7 +97,7 @@ namespace AppointmentAPP.Services
             if (startDateTime < dayStart || endDateTime > dayEnd) return false;
 
             var hasOverlap = await db.Appointments
-                .Where(a => a.ProviderId == providerId
+                .Where(a => a.ProviderId == realProviderId
                             && a.Status != AppointmentStatus.Cancelled
                             && (excludeAppointmentId == null || a.Id != excludeAppointmentId))
                 .AnyAsync(a => startDateTime < a.EndDateTime && endDateTime > a.StartDateTime);

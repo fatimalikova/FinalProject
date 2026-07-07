@@ -27,7 +27,7 @@ namespace AppointmentAPP.Services
                 issuer: config["JWT:Issuer"],
                 audience: config["JWT:Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(15),
+                expires: DateTime.UtcNow.AddMinutes(30),
                 signingCredentials: creds
             );
 

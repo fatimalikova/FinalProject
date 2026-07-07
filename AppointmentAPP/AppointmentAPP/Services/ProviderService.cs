@@ -102,6 +102,10 @@ namespace AppointmentAPP.Services
             provider.Category = dto.Category;
             provider.Description = dto.Description;
             provider.UpdatedAt = DateTime.UtcNow;
+            provider.PhoneNumber = dto.PhoneNumber;
+            provider.ContactEmail = dto.ContactEmail;
+            provider.InstagramUrl = dto.InstagramUrl;
+            provider.FacebookUrl = dto.FacebookUrl;
 
             await db.SaveChangesAsync();
             return await MapToDto(provider.Id);
@@ -147,6 +151,10 @@ namespace AppointmentAPP.Services
                 ReviewCount = provider.Reviews.Count,
                 CreatedAt = provider.CreatedAt,
                 Address = provider.Address,
+                PhoneNumber = provider.PhoneNumber,
+                ContactEmail = provider.ContactEmail,
+                InstagramUrl = provider.InstagramUrl,
+                FacebookUrl = provider.FacebookUrl,
                 Latitude = provider.Latitude,
                 Longitude = provider.Longitude
             };
