@@ -72,8 +72,16 @@ namespace AppointmentAPP.Services
 
         public async Task<List<ResponseWorkingHourDto>> GetByProviderAsync(Guid providerId)
         {
+            var realProviderId = await db.Providers
+            .Where(p => p.Id == providerId || p.UserId == providerId)
+            .Select(p => p.Id)
+            .FirstOrDefaultAsync();
+
+            if (realProviderId == Guid.Empty)
+                return new List<ResponseWorkingHourDto>();
+
             var hours = await db.WorkingHours
-                .Where(w => w.ProviderId == providerId)
+                .Where(w => w.ProviderId == realProviderId)
                 .OrderBy(w => w.Day)
                 .ToListAsync();
 

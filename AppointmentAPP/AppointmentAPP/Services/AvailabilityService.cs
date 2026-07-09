@@ -57,7 +57,7 @@ namespace AppointmentAPP.Services
             while (slotStart.Add(duration) <= workEnd)
             {
                 var slotEnd = slotStart.Add(duration);
-                bool isPast = slotStart < DateTime.UtcNow;
+                bool isPast = slotStart < DateTime.Now;
                 bool overlaps = existingAppointments.Any(a => slotStart < a.EndDateTime && slotEnd > a.StartDateTime);
 
                 if (!isPast && !overlaps)
