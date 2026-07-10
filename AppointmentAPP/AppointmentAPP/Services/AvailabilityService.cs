@@ -47,9 +47,10 @@ namespace AppointmentAPP.Services
             var slots = new List<AvailableSlotDto>();
             var duration = TimeSpan.FromMinutes(service.DurationMinutes);
 
-            // step indi DefaultSlotIntervalMinutes-dən gəlir, duration-dan deyil
-            var stepMinutes = setting?.DefaultSlotIntervalMinutes ?? 15;
-            var step = TimeSpan.FromMinutes(stepMinutes);
+            // bunu bele etmeyimde meqsed odurki , providerin her bir xidmeti ucun slotlar arasinda bosluq olmasin.
+            //cunki her xidmet ferqli muddetde ola biler
+            var step = TimeSpan.FromMinutes(service.DurationMinutes);
+            
 
             var slotStart = date.Add(workingHour.StartTime.ToTimeSpan());
             var workEnd = date.Add(workingHour.EndTime.ToTimeSpan());
