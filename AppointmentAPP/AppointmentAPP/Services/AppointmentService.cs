@@ -268,7 +268,7 @@ namespace AppointmentAPP.Services
 
             return MapToDtoFromEntity(appointment);
         }
-        // ===== Helper-lər =====
+   
         private async Task TrySendEmailAsync(string to, string subject, string body)
         {
             try
@@ -356,8 +356,10 @@ namespace AppointmentAPP.Services
             {
                 UserId = user.Id,
                 FullName = user.FullName,
+                UserName = user.UserName ?? "",
                 Email = user.Email!,
                 CreatedAt = user.CreatedAt,
+                ImageUrl = user.ImageUrl,
                 UpcomingAppointmentsCount = upcoming,
                 PastAppointmentsCount = past,
                 ReviewsWrittenCount = reviewsCount

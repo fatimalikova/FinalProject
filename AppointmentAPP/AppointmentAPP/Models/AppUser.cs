@@ -12,6 +12,7 @@ namespace AppointmentAPP.Models
         public DateTime? RefreshTokenExpiry { get; set; }   
         public string? TwoFactorCode { get; set; }
         public DateTime? TwoFactorCodeExpiry { get; set; }
+        public string? ImageUrl { get; set; }
 
         public string? ProfileImageUrl { get; set; }
         public bool IsActive { get; set; } = true;

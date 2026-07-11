@@ -1,5 +1,7 @@
 ﻿using AppointmentAPP.Dtos.Login_RegisterDtos;
+using AppointmentAPP.Dtos.ProfileDtos;
 using AppointmentAPP.Dtos.UserDtos;
+using AppointmentAPP.Exceptions;
 using AppointmentAPP.Helpers;
 using AppointmentAPP.Interfaces;
 using AppointmentAPP.Models;
@@ -249,17 +251,26 @@ namespace AppointmentAPP.Controller
 
         [HttpGet("profile")]
         [Authorize]
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var userName = User.Identity?.Name;
-            var fullName = User.FindFirst("FullName")?.Value;
-            var roles = User.Claims
-                .Where(c => c.Type == ClaimTypes.Role)
-                .Select(c => c.Value)
-                .ToList();
+            var user = userId is null ? null : await userManager.FindByIdAsync(userId);
 
-            return Ok(ResponseModelHelper.SuccessResult(new { userId, userName, fullName, roles }));
+            if (user is null)
+                return NotFound(ResponseModelHelper.NotFoundResult<object>("İstifadəçi tapılmadı."));
+
+            var roles = await userManager.GetRolesAsync(user);
+
+            return Ok(ResponseModelHelper.SuccessResult(new
+            {
+                userId = user.Id,
+                userName = user.UserName,
+                fullName = user.FullName,
+                email = user.Email,
+                createdAt = user.CreatedAt,
+                imageUrl = user.ImageUrl,
+                roles
+            }));
         }
 
         [HttpPost("logout")]
@@ -277,6 +288,46 @@ namespace AppointmentAPP.Controller
             }
 
             return Ok(ResponseModelHelper.SuccessResult("Çıxış edildi."));
+        }
+
+
+        [HttpPut("profile")]
+        [Authorize]
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateClientProfileDto dto)
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var user = await userManager.FindByIdAsync(userId.ToString())
+                ?? throw new NotFoundException("İstifadəçi tapılmadı.");
+
+            /* FullName */
+            if (!string.IsNullOrWhiteSpace(dto.FullName))
+                user.FullName = dto.FullName;
+
+            /* UserName — unikallığı yoxla */
+            if (!string.IsNullOrWhiteSpace(dto.UserName) && dto.UserName != user.UserName)
+            {
+                var existing = await userManager.FindByNameAsync(dto.UserName);
+                if (existing != null && existing.Id != user.Id)
+                    return BadRequest(ResponseModelHelper.ErrorResult<object>("Bu istifadəçi adı artıq mövcuddur."));
+                user.UserName = dto.UserName;
+            }
+
+            /* ImageUrl */
+            if (!string.IsNullOrWhiteSpace(dto.ImageUrl))
+                user.ImageUrl = dto.ImageUrl;
+
+            var result = await userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+                return BadRequest(ResponseModelHelper.ErrorResult<object>(
+                    result.Errors.First().Description));
+
+            /* Yenilənmiş profili qaytar */
+            return Ok(ResponseModelHelper.SuccessResult(new
+            {
+                fullName = user.FullName,
+                userName = user.UserName,
+                imageUrl = user.ImageUrl,
+            }));
         }
     }
 }

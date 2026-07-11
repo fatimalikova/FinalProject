@@ -2,11 +2,15 @@ using AppointmentAPP;
 using AppointmentAPP.Data;
 using AppointmentAPP.Extensions;
 using AppointmentAPP.Hubs;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 
 builder.Services.AddApplicationServices(builder.Configuration);
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+//builder.Services.Configure<StripeSettings>(
+//    builder.Configuration.GetSection("Stripe"));
 
 var app = builder.Build();
 
