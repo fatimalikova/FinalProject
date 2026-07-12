@@ -7,6 +7,7 @@ namespace AppointmentAPP.Models
     public class AppUser : IdentityUser<Guid>
     {
         public string FullName { get; set; }
+        public string? StripeCustomerId { get; set; }
 
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiry { get; set; }   

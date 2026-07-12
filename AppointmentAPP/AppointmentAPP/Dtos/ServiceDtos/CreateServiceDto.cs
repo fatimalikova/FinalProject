@@ -27,7 +27,7 @@ namespace AppointmentAPP.Dtos.ServiceDtos
                 .When(x => x.Description != null);
 
             RuleFor(x => x.Price)
-                .GreaterThan(0).WithMessage("Price must be greater than 0.");
+                .GreaterThanOrEqualTo(0).WithMessage("Price must be 0 or greater.");
 
             RuleFor(x => x.DurationMinutes)
                 .InclusiveBetween(5, 480).WithMessage("Duration must be between 5 and 480 minutes.");

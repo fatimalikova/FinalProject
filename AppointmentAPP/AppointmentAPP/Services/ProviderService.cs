@@ -52,7 +52,7 @@ namespace AppointmentAPP.Services
             return await MapToDto(providerId);
         }
 
-        // Client-lər üçün — yalnız Approved + Active görünür
+
         public async Task<List<ResponseProviderDto>> GetAllAsync(string? category, int page, int pageSize)
         {
             var query = db.Providers.Where(p => p.Status == ProviderStatus.Approved && p.IsActive);
@@ -72,7 +72,7 @@ namespace AppointmentAPP.Services
             return result;
         }
 
-        
+
         public async Task<List<ResponseProviderDto>> GetAllForAdminAsync(string? status, int page, int pageSize)
         {
             var query = db.Providers.AsQueryable();
@@ -99,6 +99,7 @@ namespace AppointmentAPP.Services
 
             provider.BusinessName = dto.BusinessName;
             provider.ImageUrl = dto.ImageUrl;
+            provider.CoverImageUrl = dto.CoverImageUrl;
             provider.Category = dto.Category;
             provider.Description = dto.Description;
             provider.UpdatedAt = DateTime.UtcNow;
@@ -142,6 +143,7 @@ namespace AppointmentAPP.Services
             {
                 Id = provider.Id,
                 ImageUrl = provider.ImageUrl,
+                CoverImageUrl = provider.CoverImageUrl,
                 BusinessName = provider.BusinessName,
                 Category = provider.Category,
                 Description = provider.Description,
@@ -160,7 +162,7 @@ namespace AppointmentAPP.Services
             };
         }
 
-        // Dashboard üçün məlumatları toplayır
+       
         public async Task<ProviderDashboardDto> GetMyDashboardAsync(Guid userId)
         {
             var provider = await db.Providers.FirstOrDefaultAsync(p => p.UserId == userId)
