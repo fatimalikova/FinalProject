@@ -234,15 +234,13 @@ namespace AppointmentAPP.Services
                 .Include(a => a.Service)
                 .Where(a => a.ProviderId == provider.Id
                             && a.StartDateTime.Date >= from.Date
-                            && a.StartDateTime.Date <= to.Date
-                            && a.Status != AppointmentStatus.Cancelled)
+                            && a.StartDateTime.Date <= to.Date)
                 .OrderBy(a => a.StartDateTime)
                 .ToListAsync();
 
             return appointments.Select(MapToDtoFromEntity).ToList();
         }
 
-        // Background job tərəfindən çağırılır — keçmiş Confirmed appointment-ləri Completed edir
         public async Task AutoCompletePastAppointmentsAsync()
         {
             var now = DateTime.UtcNow;
@@ -259,7 +257,6 @@ namespace AppointmentAPP.Services
             if (expired.Count > 0)
                 await db.SaveChangesAsync();
         }
-        //həm client, həm provider öz randevusunun detalına (status, vaxt, qeydlər) baxa bilsin.
         public async Task<ResponseAppointmentDto> GetByIdAsync(Guid userId, Guid appointmentId)
         {
             var appointment = await GetAppointmentWithIncludesAsync(appointmentId);

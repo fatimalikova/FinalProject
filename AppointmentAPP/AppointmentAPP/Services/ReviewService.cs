@@ -49,6 +49,7 @@ namespace AppointmentAPP.Services
                 Rating = review.Rating,
                 Comment = review.Comment,
                 ClientFullName = client.FullName,
+                ClientImageUrl = client.ImageUrl,
                 CreatedAt = review.CreatedAt
             };
         }
@@ -67,6 +68,7 @@ namespace AppointmentAPP.Services
                 Rating = r.Rating,
                 Comment = r.Comment,
                 ClientFullName = r.Client.FullName,
+                ClientImageUrl = r.Client.ImageUrl,
                 CreatedAt = r.CreatedAt
             }).ToList();
         }

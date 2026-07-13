@@ -104,12 +104,18 @@ namespace AppointmentAPP.Services
                     NotificationType.System);
             }
 
+            // Provider öz postuna şərh yazırsa, biznes şəklini istifadə et
+            var imageUrl = userId == post.Provider.UserId
+                ? (post.Provider.ImageUrl ?? user.ImageUrl)
+                : user.ImageUrl;
+
             return new ResponseCommentDto
             {
                 Id = comment.Id,
                 Content = comment.Content,
                 UserId = userId,
                 UserFullName = user.FullName,
+                UserImageUrl = imageUrl,
                 CreatedAt = comment.CreatedAt
             };
         }
@@ -117,6 +123,11 @@ namespace AppointmentAPP.Services
 
         public async Task<List<ResponseCommentDto>> GetCommentsAsync(Guid postId)
         {
+            var post = await db.ProviderPosts
+                .Include(p => p.Provider)
+                .FirstOrDefaultAsync(p => p.Id == postId)
+                ?? throw new NotFoundException("Post not found.");
+
             var comments = await db.PostComments
                 .Include(c => c.User)
                 .Where(c => c.PostId == postId)
@@ -129,6 +140,9 @@ namespace AppointmentAPP.Services
                 Content = c.Content,
                 UserId = c.UserId,
                 UserFullName = c.User.FullName,
+                UserImageUrl = c.UserId == post.Provider.UserId
+                    ? (post.Provider.ImageUrl ?? c.User.ImageUrl)
+                    : c.User.ImageUrl,
                 CreatedAt = c.CreatedAt
             }).ToList();
         }
@@ -168,12 +182,19 @@ namespace AppointmentAPP.Services
             comment.Content = content;
             await db.SaveChangesAsync();
 
+            var commentUser = await db.Users.FirstAsync(u => u.Id == comment.UserId);
+
+            var imageUrl = comment.UserId == comment.Post.Provider.UserId
+                ? (comment.Post.Provider.ImageUrl ?? commentUser.ImageUrl)
+                : commentUser.ImageUrl;
+
             return new ResponseCommentDto
             {
                 Id = comment.Id,
                 Content = comment.Content,
                 UserId = comment.UserId,
-                UserFullName = (await db.Users.FirstAsync(u => u.Id == comment.UserId)).FullName,
+                UserFullName = commentUser.FullName,
+                UserImageUrl = imageUrl,
                 CreatedAt = comment.CreatedAt,
             };
         }

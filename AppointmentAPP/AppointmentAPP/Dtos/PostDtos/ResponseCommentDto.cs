@@ -5,6 +5,7 @@
         public Guid Id { get; set; }
         public string Content { get; set; }
         public Guid UserId { get; set; }
+        public string? UserImageUrl { get; set; }
         public string UserFullName { get; set; }
         public DateTime CreatedAt { get; set; }
     }
