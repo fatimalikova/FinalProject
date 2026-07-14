@@ -143,6 +143,7 @@ namespace AppointmentAPP
             services.AddScoped<IUnavailableDayService, UnavailableDayService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<ISliderService, SliderService>();
+            services.AddScoped<IStripeService, StripeService>();
             services.AddSignalR();
 
             services.AddFluentValidationAutoValidation();

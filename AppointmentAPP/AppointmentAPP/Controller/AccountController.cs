@@ -299,11 +299,11 @@ namespace AppointmentAPP.Controller
             var user = await userManager.FindByIdAsync(userId.ToString())
                 ?? throw new NotFoundException("İstifadəçi tapılmadı.");
 
-            /* FullName */
+            
             if (!string.IsNullOrWhiteSpace(dto.FullName))
                 user.FullName = dto.FullName;
 
-            /* UserName — unikallığı yoxla */
+          
             if (!string.IsNullOrWhiteSpace(dto.UserName) && dto.UserName != user.UserName)
             {
                 var existing = await userManager.FindByNameAsync(dto.UserName);
@@ -312,7 +312,6 @@ namespace AppointmentAPP.Controller
                 user.UserName = dto.UserName;
             }
 
-            /* ImageUrl */
             if (!string.IsNullOrWhiteSpace(dto.ImageUrl))
                 user.ImageUrl = dto.ImageUrl;
 
@@ -321,7 +320,6 @@ namespace AppointmentAPP.Controller
                 return BadRequest(ResponseModelHelper.ErrorResult<object>(
                     result.Errors.First().Description));
 
-            /* Yenilənmiş profili qaytar */
             return Ok(ResponseModelHelper.SuccessResult(new
             {
                 fullName = user.FullName,

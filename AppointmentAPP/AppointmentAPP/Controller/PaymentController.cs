@@ -1,5 +1,6 @@
 ﻿using AppointmentAPP.Dtos.PaymentDtos;
 using AppointmentAPP.Helpers;
+using AppointmentAPP.Interfaces;
 using AppointmentAPP.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -16,23 +17,21 @@ namespace AppointmentAPP.Controller
     {
         private readonly IConfiguration _config;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IStripeService _stripeService;
 
-        public PaymentController(IConfiguration config, UserManager<AppUser> userManager)
+        public PaymentController(IConfiguration config, UserManager<AppUser> userManager, IStripeService stripeService)
         {
             _config = config;
             _userManager = userManager;
+            _stripeService = stripeService;
         }
 
-        /// <summary>
-        /// Cari istifadəçi üçün Stripe Customer-i qaytarır; yoxdursa yaradır və DB-də saxlayır.
-        /// </summary>
         private async Task<string> GetOrCreateStripeCustomerAsync(AppUser user)
         {
             if (!string.IsNullOrWhiteSpace(user.StripeCustomerId))
                 return user.StripeCustomerId;
 
-            var customerService = new CustomerService();
-            var customer = await customerService.CreateAsync(new CustomerCreateOptions
+            var customer = await _stripeService.CreateCustomerAsync(new CustomerCreateOptions
             {
                 Email = user.Email,
                 Name = user.FullName,
@@ -73,22 +72,19 @@ namespace AppointmentAPP.Controller
 
                 if (!string.IsNullOrWhiteSpace(dto.PaymentMethodId))
                 {
-                    /* Saxlanılmış kartla ödəniş — Customer-ə artıq bağlıdır */
                     options.PaymentMethodTypes = new List<string> { "card" };
                     options.PaymentMethod = dto.PaymentMethodId;
                     options.Confirm = true;
                 }
                 else
                 {
-                    /* Yeni kartla ödəniş — frontend Stripe Elements ilə təsdiqləyəcək */
                     options.AutomaticPaymentMethods = new PaymentIntentAutomaticPaymentMethodsOptions
                     {
                         Enabled = true
                     };
                 }
 
-                var service = new PaymentIntentService();
-                var intent = await service.CreateAsync(options);
+                var intent = await _stripeService.CreatePaymentIntentAsync(options);
 
                 return Ok(ResponseModelHelper.SuccessResult(new
                 {
@@ -124,8 +120,7 @@ namespace AppointmentAPP.Controller
                     Usage = "off_session"
                 };
 
-                var service = new SetupIntentService();
-                var setupIntent = await service.CreateAsync(options);
+                var setupIntent = await _stripeService.CreateSetupIntentAsync(options);
 
                 return Ok(ResponseModelHelper.SuccessResult(new
                 {
@@ -145,8 +140,7 @@ namespace AppointmentAPP.Controller
 
             try
             {
-                var service = new PaymentMethodService();
-                var pm = await service.GetAsync(pmId);
+                var pm = await _stripeService.GetPaymentMethodAsync(pmId);
 
                 if (pm?.Card == null)
                     return NotFound(ResponseModelHelper.NotFoundResult<object>("Kart tapılmadı"));
