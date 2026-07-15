@@ -137,6 +137,7 @@ namespace AppointmentAPP.Services
             var provider = await db.Providers
                 .Include(p => p.User)
                 .Include(p => p.Reviews)
+                .Include(p => p.Followers)
                 .FirstAsync(p => p.Id == providerId);
 
             return new ResponseProviderDto
@@ -151,6 +152,7 @@ namespace AppointmentAPP.Services
                 OwnerFullName = provider.User.FullName,
                 AverageRating = provider.Reviews.Any() ? Math.Round(provider.Reviews.Average(r => r.Rating), 1) : 0,
                 ReviewCount = provider.Reviews.Count,
+                FollowersCount = provider.Followers.Count,
                 CreatedAt = provider.CreatedAt,
                 Address = provider.Address,
                 PhoneNumber = provider.PhoneNumber,
@@ -162,7 +164,7 @@ namespace AppointmentAPP.Services
             };
         }
 
-       
+
         public async Task<ProviderDashboardDto> GetMyDashboardAsync(Guid userId)
         {
             var provider = await db.Providers.FirstOrDefaultAsync(p => p.UserId == userId)
