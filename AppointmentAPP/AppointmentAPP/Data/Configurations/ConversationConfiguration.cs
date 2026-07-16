@@ -8,7 +8,6 @@ namespace AppointmentAPP.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Conversation> builder)
         {
-            // Bir client + bir provider = yalnız BİR conversation thread-i
             builder.HasIndex(c => new { c.ClientId, c.ProviderId }).IsUnique();
 
             builder.HasOne(c => c.Client)

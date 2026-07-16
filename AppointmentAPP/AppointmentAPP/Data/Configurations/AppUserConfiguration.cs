@@ -15,7 +15,6 @@ namespace AppointmentAPP.Data.Configurations
             builder.Property(u => u.ProfileImageUrl)
                 .HasMaxLength(500);
 
-            // AppUser silinende Provider-i də sil (1-to-1)
             builder.HasOne(u => u.Provider)
                 .WithOne(p => p.User)
                 .HasForeignKey<Provider>(p => p.UserId)

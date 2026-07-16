@@ -18,7 +18,6 @@ namespace AppointmentAPP.Data.Configurations
             builder.Property(s => s.Price)
                 .HasColumnType("decimal(10,2)");
 
-            // Servis silinəndə appointment-lər silinməsin (tarixçə qalsın)
             builder.HasMany(s => s.Appointments)
                 .WithOne(a => a.Service)
                 .HasForeignKey(a => a.ServiceId)

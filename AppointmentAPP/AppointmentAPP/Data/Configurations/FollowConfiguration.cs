@@ -8,7 +8,6 @@ namespace AppointmentAPP.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Follow> builder)
         {
-            //Bir user, bir provider-i yalnız BİR dəfə follow edə bilər
             builder.HasIndex(f => new { f.FollowerId, f.ProviderId }).IsUnique();
 
             builder.HasOne(f => f.Follower)

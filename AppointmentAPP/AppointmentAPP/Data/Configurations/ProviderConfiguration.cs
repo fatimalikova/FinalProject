@@ -34,7 +34,6 @@ namespace AppointmentAPP.Data.Configurations
                 .HasForeignKey(u => u.ProviderId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Multiple cascade path problemi olmasın deyə Restrict
             builder.HasMany(p => p.Appointments)
                 .WithOne(a => a.Provider)
                 .HasForeignKey(a => a.ProviderId)

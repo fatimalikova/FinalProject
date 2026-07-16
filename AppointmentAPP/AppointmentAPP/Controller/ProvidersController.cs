@@ -37,7 +37,6 @@ namespace AppointmentAPP.Controller
             return Ok(ResponseModelHelper.SuccessResult(result));
         }
 
-        // 🔑 F8 — admin pending provider-ləri də görə bilsin
         [Authorize(Roles = "Admin")]
         [HttpGet("admin/all")]
         public async Task<IActionResult> GetAllForAdmin([FromQuery] string? status, [FromQuery] int page = 1, [FromQuery] int pageSize = 20)

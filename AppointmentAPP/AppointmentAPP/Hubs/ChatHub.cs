@@ -25,10 +25,8 @@ namespace AppointmentAPP.Hubs
                 var senderId = Context.User!.GetUserId();
                 var message = await messageService.SendAsync(senderId, dto);
 
-                // qarşı tərəfə canlı çatdırır (online-dırsa)
                 await Clients.User(message.ReceiverId.ToString()).SendAsync("ReceiveMessage", message);
 
-                // göndərənin öz UI-ına təsdiq
                 await Clients.Caller.SendAsync("MessageSent", message);
             }
             catch (Exception ex)

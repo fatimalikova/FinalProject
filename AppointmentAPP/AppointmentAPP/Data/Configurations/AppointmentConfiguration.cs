@@ -9,7 +9,7 @@ namespace AppointmentAPP.Data.Configurations
         public void Configure(EntityTypeBuilder<Appointment> builder)
         {
             builder.Property(a => a.Status)
-               .HasConversion<string>()   // enum DB-də string kimi saxlanılır (oxunaqlı olur)
+               .HasConversion<string>()   
                .HasMaxLength(30)
                .IsRequired();
 
@@ -19,7 +19,6 @@ namespace AppointmentAPP.Data.Configurations
             builder.Property(a => a.PriceAtBooking)
                     .HasColumnType("decimal(10,2)");
 
-            // AppUser (Client) silinəndə onun appointment-ləri də silinsin
             builder.HasOne(a => a.Client)
                 .WithMany(u => u.Appointments)
                 .HasForeignKey(a => a.ClientId)
