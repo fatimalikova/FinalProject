@@ -65,7 +65,6 @@ namespace AppointmentAPP.Controller
             return Ok(ResponseModelHelper.SuccessResult(result));
         }
 
-        // F7 — Client history: ?filter=upcoming|past (boş buraxsan hamısı gəlir)
         [Authorize(Roles = "Client")]
         [HttpGet("me")]
         public async Task<IActionResult> GetMyAppointments([FromQuery] string? filter)
@@ -74,7 +73,6 @@ namespace AppointmentAPP.Controller
             return Ok(ResponseModelHelper.SuccessResult(result));
         }
 
-        // F5 — Provider calendar: ?from=2026-06-19&to=2026-06-19 (gün) və ya &to=2026-06-25 (həftə)
         [Authorize(Roles = "Provider")]
         [HttpGet("calendar")]
         public async Task<IActionResult> GetCalendar([FromQuery] DateTime from, [FromQuery] DateTime to)
@@ -83,7 +81,6 @@ namespace AppointmentAPP.Controller
             return Ok(ResponseModelHelper.SuccessResult(result));
         }
 
-        //kimsə özünə aid olmayan appointment-in detalına baxa bilməsin deyə 
         [Authorize(Roles = "Client,Provider")]
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById(Guid id)
