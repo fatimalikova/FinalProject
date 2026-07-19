@@ -1,20 +1,20 @@
-# 📅 Appointment System
+# Appointment System
 
 > A full-featured appointment booking platform built as a final project for **Code Academy**.  
 > Connects service providers (dentists, beauty salons, lawyers, tutors, etc.) with clients through a modern web interface.
 
 ---
 
-## 🌐 Live Demo
+## Live Demo
 
 > Backend: `http://localhost:5291`  
 > Frontend: `http://127.0.0.1:5500` (Live Server)
 
 ---
 
-## ✨ Features
+## Features
 
-### 👤 Client
+### Client
 - Register & login with **Email 2FA**
 - Search & filter providers by category and rating
 - **4-step booking wizard**: Provider → Service → Date/Time → Payment
@@ -24,7 +24,7 @@
 - Like, comment & follow providers
 - Edit profile & upload avatar (ImgBB)
 
-### 🏢 Provider
+### Provider
 - Create and manage business profile
 - Add services (paid or free — price = 0)
 - Set weekly working hours & unavailable days
@@ -33,7 +33,7 @@
 - Real-time SignalR notifications
 - Dashboard with weekly stats
 
-### 🛡 Admin
+### Admin
 - Approve / block providers
 - Deactivate / reactivate services
 - View all appointments on the platform
@@ -42,7 +42,7 @@
 
 ---
 
-## 🚀 Tech Stack
+## Tech Stack
 
 ### Backend
 | Technology | Purpose |
@@ -70,7 +70,7 @@
 
 ---
 
-## 🗂 Project Structure
+## Project Structure
 
 ```
 appointment-system/
@@ -135,7 +135,7 @@ appointment-system/
 
 ---
 
-## 🗄 Database Schema
+## Database Schema
 
 ```
 AspNetUsers          → Id, FullName, Email, UserName, ImageUrl, CreatedAt
@@ -160,7 +160,7 @@ SystemSettings       → MinCancellationNoticeHours, MaxAdvanceBookingDays,
 
 ---
 
-## ⚙️ Setup & Installation
+## Setup & Installation
 
 ### Prerequisites
 - [.NET 8 SDK](https://dotnet.microsoft.com/download)
@@ -204,7 +204,7 @@ http://127.0.0.1:5500/client/pages/home.html
 
 ---
 
-## 📋 API Endpoints (Summary)
+## API Endpoints (Summary)
 
 ### Auth
 ```
@@ -270,7 +270,7 @@ GET  /api/reviews/provider/{providerId}
 
 ---
 
-## 🧩 Smart Booking Logic
+## Smart Booking Logic
 
 ```
 Service price = 0  →  3-step wizard (no payment step)
@@ -282,7 +282,7 @@ No card saved         →  Redirect to dashboard to add card
 
 ---
 
-## 🔔 Real-time Events (SignalR)
+## Real-time Events (SignalR)
 
 | Event | Recipients |
 |---|---|
@@ -294,7 +294,7 @@ No card saved         →  Redirect to dashboard to add card
 
 ---
 
-## ✅ Mandatory Features Checklist
+## Mandatory Features Checklist
 
 - [x] F1 — Provider registration + services + working hours
 - [x] F2 — Real-time slot availability (based on service duration)
@@ -307,7 +307,7 @@ No card saved         →  Redirect to dashboard to add card
 
 ---
 
-## 🌟 Bonus Features
+## Bonus Features
 
 - [x] Stripe payment integration (test mode)
 - [x] Social platform (Post / Like / Comment / Follow)
@@ -323,7 +323,7 @@ No card saved         →  Redirect to dashboard to add card
 
 ---
 
-## 🎨 Color Palette
+## Color Palette
 
 | Color | Hex | Usage |
 |---|---|---|
@@ -335,7 +335,7 @@ No card saved         →  Redirect to dashboard to add card
 
 ---
 
-## 📄 License
+## License
 
 This project is for educational purposes — **Code Academy Final Project**.
 
