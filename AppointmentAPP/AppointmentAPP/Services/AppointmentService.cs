@@ -44,6 +44,16 @@ namespace AppointmentAPP.Services
             if (dto.StartDateTime < DateTime.UtcNow)
                 throw new BadRequestException("Cannot book an appointment in the past.");
 
+            //var clientConflict = await db.Appointments
+            //    .AnyAsync(a =>
+            //    a.ClientId == clientId &&
+            //    a.Status != AppointmentStatus.Cancelled &&
+            //    a.StartDateTime < endDateTime &&
+            //    a.EndDateTime > dto.StartDateTime);
+
+            //if (clientConflict)
+            //    throw new BadRequestException("You already have an appointment scheduled for this time slot. Please choose a different time.");
+
             var isAvailable = await availabilityService.IsSlotAvailableAsync(
                 provider.Id, dto.StartDateTime, endDateTime);
             if (!isAvailable)
@@ -67,7 +77,6 @@ namespace AppointmentAPP.Services
             var client = await db.Users.FirstAsync(u => u.Id == clientId);
             var providerUser = await db.Users.FirstAsync(u => u.Id == provider.UserId);
 
-            /* In-app notifications */
             await notificationService.CreateAsync(
                 clientId, "Appointment Confirmed",
                 $"Your appointment for {service.Name} on {dto.StartDateTime:dd MMM yyyy HH:mm} is confirmed.",
@@ -78,40 +87,37 @@ namespace AppointmentAPP.Services
                 $"A new appointment has been booked for {service.Name} on {dto.StartDateTime:dd MMM yyyy HH:mm}.",
                 NotificationType.AppointmentBooked);
 
-            /* Provider-ə email */
             await TrySendEmailAsync(
                 providerUser.Email!,
                 "New Reservation Received",
-                $"<h3>Yeni rezervasiya</h3>" +
-                $"<p><b>{client.FullName}</b> sizin <b>{service.Name}</b> xidmətiniz üçün rezervasiya etdi.</p>" +
-                $"<p>Tarix: <b>{dto.StartDateTime:dd MMM yyyy HH:mm}</b></p>" +
-                $"<p>Müştəri email: {client.Email}</p>");
+                $"<h3>New Reservation Received</h3>" +
+                $"<p><b>{client.FullName}</b> has booked an appointment for <b>{service.Name}</b>.</p>" +
+                $"<p>Date: <b>{dto.StartDateTime:dd MMM yyyy HH:mm}</b></p>" +
+                $"<p>Client Email: {client.Email}</p>");
 
-            /* Admin-lərə email */
             var admins = await userManager.GetUsersInRoleAsync("Admin");
             foreach (var admin in admins)
             {
                 await TrySendEmailAsync(
                     admin.Email!,
                     "New Reservation on Platform",
-                    $"<h3>Yeni rezervasiya</h3>" +
-                    $"<p>Müştəri: <b>{client.FullName}</b></p>" +
+                    $"<h3>New Reservation Received</h3>" +
+                    $"<p>Client: <b>{client.FullName}</b></p>" +
                     $"<p>Provider: <b>{provider.BusinessName}</b></p>" +
-                    $"<p>Xidmət: {service.Name}</p>" +
-                    $"<p>Tarix: {dto.StartDateTime:dd MMM yyyy HH:mm}</p>");
+                    $"<p>Service: {service.Name}</p>" +
+                    $"<p>Date: <b>{dto.StartDateTime:dd MMM yyyy HH:mm}</b></p>");
             }
 
-            /* Client-ə email */
             await TrySendEmailAsync(
                 client.Email!,
                 "Reservation Confirmed",
-                $"<h3>Rezervasiyanız təsdiqləndi</h3>" +
-                $"<p>Hörmətli <b>{client.FullName}</b>,</p>" +
-                $"<p><b>{provider.BusinessName}</b> üçün <b>{service.Name}</b> xidmətinə rezervasiyanız təsdiqləndi.</p>" +
-                $"<p>Tarix: <b>{dto.StartDateTime:dd MMM yyyy HH:mm}</b></p>" +
-                $"<p>Ünvan: {provider.Address}</p>" +
+                $"<h3>Your Reservation Confirmed</h3>" +
+                $"<p>Dear <b>{client.FullName}</b>,</p>" +
+                $"<p>Your appointment for <b>{service.Name}</b> with <b>{provider.BusinessName}</b> has been confirmed.</p>" +
+                $"<p>Date: <b>{dto.StartDateTime:dd MMM yyyy HH:mm}</b></p>" +
+                $"<p>Address: {provider.Address}</p>" +
                 (provider.Latitude.HasValue
-                    ? $"<p><a href='https://www.google.com/maps?q={provider.Latitude},{provider.Longitude}'>Xəritədə bax</a></p>"
+                    ? $"<p><a href='https://www.google.com/maps?q={provider.Latitude},{provider.Longitude}'>View on Map</a></p>"
                     : ""));
 
             return await MapToDto(appointment.Id);
@@ -201,7 +207,6 @@ namespace AppointmentAPP.Services
             return MapToDtoFromEntity(appointment);
         }
 
-        // F7 — Client history (upcoming / past / all)
         public async Task<List<ResponseAppointmentDto>> GetMyAppointmentsAsync(Guid clientUserId, string? filter)
         {
             var query = db.Appointments
@@ -222,7 +227,7 @@ namespace AppointmentAPP.Services
             return appointments.Select(MapToDtoFromEntity).ToList();
         }
 
-        // F5 — Provider calendar (daily/weekly — from/to ilə idarə olunur)
+      
         public async Task<List<ResponseAppointmentDto>> GetProviderCalendarAsync(Guid providerUserId, DateTime from, DateTime to)
         {
             var provider = await db.Providers.FirstOrDefaultAsync(p => p.UserId == providerUserId)
