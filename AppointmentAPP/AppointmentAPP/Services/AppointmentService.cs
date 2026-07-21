@@ -44,15 +44,15 @@ namespace AppointmentAPP.Services
             if (dto.StartDateTime < DateTime.UtcNow)
                 throw new BadRequestException("Cannot book an appointment in the past.");
 
-            //var clientConflict = await db.Appointments
-            //    .AnyAsync(a =>
-            //    a.ClientId == clientId &&
-            //    a.Status != AppointmentStatus.Cancelled &&
-            //    a.StartDateTime < endDateTime &&
-            //    a.EndDateTime > dto.StartDateTime);
+            var clientConflict = await db.Appointments
+                .AnyAsync(a =>
+                a.ClientId == clientId &&
+                a.Status != AppointmentStatus.Cancelled &&
+                a.StartDateTime < endDateTime &&
+                a.EndDateTime > dto.StartDateTime);
 
-            //if (clientConflict)
-            //    throw new BadRequestException("You already have an appointment scheduled for this time slot. Please choose a different time.");
+            if (clientConflict)
+                throw new BadRequestException("You already have an appointment scheduled for this time slot. Please choose a different time.");
 
             var isAvailable = await availabilityService.IsSlotAvailableAsync(
                 provider.Id, dto.StartDateTime, endDateTime);
